@@ -10,7 +10,7 @@ const PostPortal = ({ isOpen, onClose }) => {
   if(!isOpen) return null
 
   return createPortal(
-    <div className='fixed top-0 left-0 right-0 bottom-0 bg-black/60 flex items-center justify-center'>
+    <div className='fixed top-0 left-0 right-0 bottom-0 bg-black/60 flex items-center justify-center z-1000'>
       <div className='flex flex-col gap-5 bg-white p-5 rounded-2xl w-[95%] sm:w-[60%] md:w-[45%]'>
         <div>
             <div className='flex items-center justify-between'>

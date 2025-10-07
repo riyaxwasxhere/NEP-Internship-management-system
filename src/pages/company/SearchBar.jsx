@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 
@@ -19,10 +18,10 @@ const SearchBar = () => {
       <div className="flex">
         <input
           type="text"
-          placeholder="Search your post..."
+          placeholder="Search here..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className=" text-xs sm:text-[14px] bg-transparent flex-1 outline-0 border-0 "
+          className=" text-xs sm:text-[14px] bg-transparent flex-1 outline-0 border-0 w-22"
         />
         <Button 
         className='bg-blue-500 text-xs rounded-3xl outline-0 border-0 hover:bg-blue-400 cursor-pointer'

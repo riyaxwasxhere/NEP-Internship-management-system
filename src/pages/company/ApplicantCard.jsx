@@ -16,18 +16,18 @@ import { CalendarIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIco
 const ApplicantCard = ({...props}) => {
   return (
     <div>
-      <Card classname='bg-amber-50 flex'>
-        <CardHeader classname='flex items-center justify-between'>
-            <div className='flex gap-4 sm:gap-8'>
-                <div className=' flex flex-col items-center gap-2'>
+      <Card className='flex'>
+        <CardHeader className=' flex items-center justify-between'>
+            <div className='flex flex-col sm:flex-row gap-4 sm:gap-8'>
+                <div className=' flex sm:flex-col items-center gap-2'>
                     <img 
-                    className='rounded-[50%] h-15 sm:h-20 md:h-25 lg:h-30'
+                    className='rounded-[50%] h-12 sm:h-20 md:h-25 lg:h-30'
                     src={props.photo} 
                     alt="" />
                     <Badge 
                         variant = "secondary"
                         className={cn(
-                        'text-white text-xs rounded-2xl',
+                        'text-white text-[10px] sm:text-xs rounded-2xl',
                         props.status === "Shortlisted" && "bg-green-600",
                         props.status === "Applied" && "bg-blue-600",
                         props.status === "Screening" && "bg-orange-400",
@@ -41,7 +41,7 @@ const ApplicantCard = ({...props}) => {
 
                 <div className='flex-1'>
                     <h2 className='text-xl font-semibold'>{props.name}</h2>
-                    <p className='text-2xs sm:text-xs '>Id: {props.id}</p>
+                    <p className='text-[10px] sm:text-xs '>Id: {props.id}</p>
                     <div className='flex flex-col lg:flex-row lg:gap-5 lg:items-center justify-between'>
                         <h3 className='text-xs sm:text-sm'>{props.roleApplied}</h3>
                         <h3 className='text-xs sm:text-sm'>{props.appliedDate}</h3>
