@@ -6,6 +6,9 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Dynamically detect base path like "faculty" or "company"
+  const basePath = menuItems[0]?.path.split("/")[1] || "";
+
   useEffect(() => {
     if (window.innerWidth < 640) {
       document.body.style.overflow = isOpen ? "hidden" : "auto";
@@ -38,10 +41,19 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
               onClick={() => setIsOpen(true)}
               className="p-2 rounded hover:bg-blue-500 transition-colors"
             >
-             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
           )}
@@ -53,7 +65,7 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
             <button
               key={index}
               onClick={() => {
-                navigate(item.path); // Absolute path
+                navigate(item.path); // Navigate to absolute path
                 if (window.innerWidth < 640) setIsOpen(false);
               }}
               className={`flex items-center p-2 rounded-lg transition-colors duration-300 w-full text-left
@@ -84,12 +96,12 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
         }`}
       >
         <Routes>
-          {/* Redirect default route */}
+          {/* Default Redirect */}
           {defaultRoute && <Route index element={<Navigate to={defaultRoute} replace />} />}
-          {/* Render menu components */}
+
+          {/* Render menu routes dynamically */}
           {menuItems.map((item, index) => {
-            // Make relative path inside layout routes
-            const relativePath = item.path.replace(/^\/faculty\//, "");
+            const relativePath = item.path.replace(new RegExp(`^/${basePath}/`), "");
             return <Route key={index} path={relativePath} element={item.component} />;
           })}
         </Routes>
