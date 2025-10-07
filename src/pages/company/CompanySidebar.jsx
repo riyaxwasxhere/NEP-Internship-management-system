@@ -3,6 +3,7 @@ import React from 'react'
 import CompanyDashboard from './CompanyDashboard';
 import MyInternships from './MyInternships';
 import Applicants from './Applicants';
+import SidebarLayout from '../SidebarLayout';
 
 const CompanySidebar = () => {
     const menuItems = [
