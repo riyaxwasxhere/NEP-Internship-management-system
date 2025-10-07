@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils";
 import { CalendarIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIcon, UsersIcon, WorkflowIcon, X } from 'lucide-react';
 
-
 const InternshipCard = ({ title, posted, location, duration, stipend, applicants }) => {
   return (
     <div>
