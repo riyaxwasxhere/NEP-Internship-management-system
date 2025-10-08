@@ -17,39 +17,40 @@ const InternshipDetails = ({ isOpen, onClose, onEdit}) => {
                     className='h-4.5 text-gray-500 hover:bg-white hover:cursor-pointer'
                     onClick={onClose}><X/></Button>
                 </div>
+                <div className='border-t-1'></div>
                 <div>
                     <div>
-                        <Badge className='bg-blue-500 my-2 text-xs'>worktype: Work from home</Badge>
+                        <Badge className='bg-blue-500 text-xs'>worktype: Work from home</Badge>
                     </div>
                     
                     <div className='py-2 grid grid-cols-1 sm:grid-cols-2'>
-                        <h3 className='text-gray-500 text-lg'>Domain: Software Development</h3>
-                        <h3 className='text-gray-500 text-lg'>Location: Remote </h3>
+                        <h3 className='text-gray-500 text-[16px]'>Domain: Software Development</h3>
+                        <h3 className='text-gray-500 text-[16px] '>Location: Remote </h3>
                     </div>
 
                     <div className=' grid grid-cols-2 sm:grid-cols-4 justify-between gap-2'>
                         <div >
                             <h3 className='text-gray-500 text-sm flex items-center'>
                                 <PlayIcon className='h-4 sm:4.5'/> start date</h3>
-                            <h3 className='text-lg pl-5 font-semibold'>Immediately</h3>
+                            <h3 className='text-[16px] pl-5'>Immediately</h3>
                         </div>
                         <div >
                             <h3 className='text-gray-500 text-sm flex items-center'>
                                 <CalendarIcon className='h-4 sm:4.5'/> duration</h3>
-                            <h3 className='pl-5 text-lg font-semibold'>1 month</h3>
+                            <h3 className='pl-5 text-[16px]'>1 month</h3>
                         </div>
                         <div>
                             <h3 className='text-gray-500 text-sm flex items-center'>
                                 <DollarSignIcon className='h-4 sm:4.5'/> stipend </h3>
-                            <h3 className='pl-5 text-lg font-semibold'>15000 /month</h3>
+                            <h3 className='pl-5 text-[16px]'>15000 /month</h3>
                         </div>
                         <div>
                             <h3 className='text-gray-500 text-sm flex items-center'>
                                 <HourglassIcon className='h-4 sm:4.5'/> apply by</h3>
-                            <h3 className='pl-5 text-lg font-semibold'>6 nov' 25</h3>
+                            <h3 className='pl-5 text-[16px]'>6 nov' 25</h3>
                         </div>
-                        
                     </div>
+                    <div className='border-t-1 my-3'></div>
                     <div>
                         <h3 className='text-xl font-semibold'>Description</h3>
                         <p className='text-gray-500 text-[16px]'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat tenetur tempora molestias blanditiis, nemo magnam voluptatum, dolore iure fugiat nostrum facere. Nemo tenetur nobis dolor architecto tempora beatae assumenda delectus ad consequatur porro blanditiis, reiciendis repellat excepturi, doloribus omnis laudantium incidunt. Natus adipisci alias reprehenderit provident odit molestias blanditiis ipsam ipsum quam sapiente, dicta aperiam nihil nesciunt mollitia esse commodi porro temporibus aspernatur aliquam iure! Facere laboriosam repellat ea similique magnam obcaecati corrupti, officiis porro saepe. Obcaecati, voluptas quam! Sunt sequi iure voluptatem commodi ut, excepturi accusamus perspiciatis! Enim quaerat ipsam dignissimos minima tempore nobis labore voluptatibus? Laboriosam, voluptatum iure.</p>
