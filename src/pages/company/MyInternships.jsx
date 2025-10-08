@@ -75,12 +75,12 @@ const MyInternships = () => {
 
     return (
     <div>
-      <header className='flex justify-between pb-4 sm:p-10'>
+      <header className='flex justify-between pb-4 sm:p-10 gap-4'>
         <div className='flex-1'>
-            <h1 className='text-lg sm:text-3xl font-bold'>My Internships</h1>
-            <p className='text-xs sm:text-[14px] text-gray-500'>View all your internships</p>
+            <h1 className='text-2xl sm:text-4xl font-bold'>My Internships</h1>
+            <p className='text-sm text-gray-500'>View all your internships</p>
         </div>
-        <div>
+        <div className='mt-2'>
             <SearchBar onSearch={handleSearch}/>
         </div>
       </header>
