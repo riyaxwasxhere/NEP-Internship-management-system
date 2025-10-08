@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils";
-import { CalendarIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIcon, UsersIcon, WorkflowIcon, X } from 'lucide-react';
+import { CalendarIcon, Check, CheckIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIcon, UsersIcon, WorkflowIcon, X } from 'lucide-react';
 
 const ApplicantCard = ({...props}) => {
   return (
@@ -42,11 +42,11 @@ const ApplicantCard = ({...props}) => {
                 <div className='flex-1'>
                     <h2 className='text-xl font-semibold'>{props.name}</h2>
                     <p className='text-[10px] sm:text-xs '>Id: {props.id}</p>
-                    <div className='flex flex-col lg:flex-row lg:gap-5 lg:items-center justify-between'>
+                    <div className='flex lg:gap-5 lg:items-center justify-between'>
                         <h3 className='text-xs sm:text-sm'>{props.roleApplied}</h3>
                         <h3 className='text-xs sm:text-sm'>{props.appliedDate}</h3>
                     </div>
-                    <div className='flex flex-col lg:flex-row lg:gap-5 lg:items-center justify-between'>
+                    <div className='flex lg:gap-5 lg:items-center justify-between'>
                         <h3 className='text-xs sm:text-sm'>📍{props.location}</h3>
                         <h3 className='text-xs sm:text-sm'>💼{props.experience}</h3>
                     </div>
@@ -58,8 +58,8 @@ const ApplicantCard = ({...props}) => {
         </CardHeader>
         <CardFooter className='flex justify-center'>
             <div className='flex gap-5'>
-                <Button className='bg-green-500 text-xs sm:text-sm sm:px-10 hover:bg-green-600 cursor-pointer'>Approve</Button>
-                <Button className='bg-red-500 text-xs sm:text-sm sm:px-10 hover:bg-red-600 cursor-pointer'>Reject</Button>
+                <Button className='bg-green-500 text-xs sm:text-sm sm:px-10 hover:bg-green-600 cursor-pointer'><CheckIcon/> Approve</Button>
+                <Button className='bg-red-500 text-xs sm:text-sm sm:px-10 hover:bg-red-600 cursor-pointer'><X/> Reject</Button>
             </div>
         </CardFooter>
       </Card>

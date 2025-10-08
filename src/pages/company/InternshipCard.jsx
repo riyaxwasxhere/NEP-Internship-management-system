@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -12,8 +12,12 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils";
 import { CalendarIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIcon, UsersIcon, WorkflowIcon, X } from 'lucide-react';
+import InternshipDetails from './InternshipDetails';
 
 const InternshipCard = ({ title, posted, location, duration, stipend, applicants }) => {
+  const [isOpen, setIsOpen ] = useState(false)
+
+
   return (
     <div>
       <Card>
@@ -43,7 +47,22 @@ const InternshipCard = ({ title, posted, location, duration, stipend, applicants
             </CardContent>
 
             <CardFooter className='flex gap-2'>
-                <Button variant="outline" className='flex-1 hover:cursor-pointer hover:bg-blue-400 bg-blue-500 text-white transition-all duration-100 ease-in'>View Applications</Button>
+                <Button 
+                onClick={()=>setIsOpen(true)}
+                variant="outline" 
+                className='flex-1 hover:cursor-pointer hover:bg-blue-400 bg-blue-500 text-white transition-all duration-100 ease-in'>View Applications</Button>
+
+                <InternshipDetails
+                title={title}
+                posted={posted}
+                location={location}
+                duration={duration}
+                stipend={stipend}
+                applicants={applicants}
+                
+                isOpen={isOpen}
+                onClose={()=>setIsOpen(false)}
+                />
                 <Button variant="outline" className='bg-gray-50 hover:cursor-pointer hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in'>Edit</Button>
             </CardFooter>
         </Card>
