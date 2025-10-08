@@ -31,8 +31,22 @@ function Credits() {
                 </div>
             </div>
         </div>
-        <div>
-            
+        <div className=" border-1 border-gray-200 bg-white rounded-xl p-5">
+            <h1 className="text-xl font-bold">Credit Assignment History</h1>
+            <p className="my-2 ">Previously assigned credits</p>
+            <div className="relative border-1 border-gray-200 rounded-lg p-3">
+                <div className="absolute top-0 md:top-2 right-2 flex md:block gap-1">
+                    <p className="text-right font-bold md:text-lg text-blue-600">2</p>
+                    <p>Credits</p>
+                </div>
+                <h1 className="font-semibold text-lg mt-2 md:mt-0">Rajdeep majumdar</h1>
+                <p className="my-2  text-gray-600">CS21B001 • Full Stack Developer Intern at TechCorp Solution</p>
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-1 md:gap-5 text-left">
+                    <p><span className="text-gray-600">Duration:</span> 3 months</p>
+                    <p><span className="text-gray-600">Assigned:</span> 2025-01-20</p>
+                </div>
+                <p className="my-2 text-gray-600">Excellent performance and consistent logbook maintenance</p>
+            </div>
         </div>
     </div>
   )
