@@ -1,3 +1,4 @@
+import { Modal } from "./Modal"
 
 
 function Credits() {
@@ -48,6 +49,14 @@ function Credits() {
                 <p className="my-2 text-gray-600">Excellent performance and consistent logbook maintenance</p>
             </div>
         </div>
+        <Modal
+  name="Jane Smith"
+  rollNo="CS21B002"
+  internship="Data Science Intern"
+  duration="6 months"
+  logbookEntries={60}
+/>
+
     </div>
   )
 }
