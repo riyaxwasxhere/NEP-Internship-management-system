@@ -21,7 +21,7 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
       <aside
         className={`fixed top-0 left-0 h-screen bg-blue-600 text-white flex flex-col
           transition-all duration-300 z-50
-          ${isOpen ? "w-full sm:w-64" : "w-16"}
+          ${isOpen ? "w-full sm:w-64" : "md:w-16 w-12 "}
         `}
       >
         {/* Header */}
@@ -39,11 +39,11 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
           ) : (
             <button
               onClick={() => setIsOpen(true)}
-              className="p-2 rounded hover:bg-blue-500 transition-colors"
+              className=" p-2 rounded hover:bg-blue-500 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="md:h-6 md:w-6 h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -72,7 +72,7 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
                 ${location.pathname === item.path ? "bg-blue-700" : "hover:bg-blue-500"}
               `}
             >
-              <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-blue-700 rounded-md">
+              <div className="flex-shrink-0 md:w-10 md:h-10 w-8 h-8  flex items-center justify-center bg-blue-700 rounded-md">
                 {item.icon}
               </div>
               {isOpen && <span className="ml-4 text-white font-medium">{item.name}</span>}
@@ -91,8 +91,8 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
 
       {/* Main Content */}
       <main
-        className={`flex-1 p-6 bg-gray-50 min-h-screen overflow-y-auto transition-all duration-300 ${
-          isOpen ? "ml-64" : "ml-16"
+        className={`flex-1 md:p-6 p-2 bg-gray-50 min-h-screen overflow-y-auto transition-all duration-300 ${
+          isOpen ? "ml-64" : "md:ml-16 ml-12"
         }`}
       >
         <Routes>
