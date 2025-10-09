@@ -53,11 +53,11 @@ const CompanyDashboard = () => {
   ]
 
   const [isOpen, setIsOpen] = useState(false)
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  // const [sidebarOpen, setSidebarOpen] = useState(true)
 
-  const handleSidebar = () =>{
-    setSidebarOpen(!sidebarOpen)
-  }
+  // const handleSidebar = () =>{
+  //   setSidebarOpen(!sidebarOpen)
+  // }
 
   return (
     <div className='flex relative' >
@@ -101,23 +101,24 @@ const CompanyDashboard = () => {
 
       {/* main content */}
       <main className={cn(
-        "flex-1 py-5 px-2 sm:p-8 relative",
+
+        "flex-1 sm:p-8 relative",
         sidebarOpen ? "": "pl-16"
       )}>
-        <div className='flex justify-between'>
+        <div className='flex justify-between gap-5'>
           <div className='flex-1'>
-            <h1 className='sm:text-2xl md:text-[31.5px] font-bold'>Company Dashboard</h1>
+            <h1 className='text-2xl md:text-[31.5px] font-bold'>Company Dashboard</h1>
             <p className='text-sm text-gray-500'>Manage your internship postings and applications</p>
           </div>
           <Button 
           onClick = {()=> setIsOpen(true)}
           className='bg-blue-600 hover:bg-blue-400 hover:cursor-pointer 
-          lg:text-[16px] text-xs sm:text-sm p-2 sm:p-5'>+ Post Internship</Button> 
+          lg:text-[16px] text-xs sm:text-sm p-2 sm:p-5 mt-2'>+ Post Internship</Button> 
         </div>
 
         <PostPortal
-        isOpen={isOpen} 
-        onClose={()=> setIsOpen(false)}>
+          isOpen={isOpen} 
+          onClose={()=> setIsOpen(false)}>
         </PostPortal>
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-8 gap-5'>

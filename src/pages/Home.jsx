@@ -5,12 +5,28 @@ import {
 
 import { GoBook, GoPeople } from "react-icons/go";
 import { FiAward, FiShield } from "react-icons/fi";
+import LoginPortal from "../LoginPortal";
+import { useState } from "react";
 
 function Home() {
+  const [loginOpen, setLoginOpen] = useState(false)
+  
   return (
     <div>
       <div className="p-15 md:px-30 md:py-20 bg-blue-600 text-center flex justify-center">
         <div className="max-w-4xl text-center">
+          <h1 className="md:text-5xl text-4xl font-bold text-white">NEP Internship Management System</h1>
+          <p className="text-xl text-white my-10">Connecting Students, Companies, and Colleges for verified, credit-worthy internships under the National Education Policy</p>
+
+          <button 
+          onClick={()=>setLoginOpen(true)}
+          className="p-2 px-5 bg-white text-xl font-semibold rounded  hover:scale-105 cursor-pointer">Get Started</button>
+
+          <LoginPortal
+              isOpen = {loginOpen}
+              onClose = {()=>setLoginOpen(false)}
+          />
+
           <h1 className="md:text-5xl text-4xl font-bold text-white">
             NEP Internship Management System
           </h1>
@@ -104,6 +120,11 @@ function Home() {
         </div>
       </div>
       <div className="text-center bg-blue-600 p-10">
+        <h1 className="text-4xl font-bold text-white">Ready to Get Started ?</h1>
+        <p className="text-white font-semibold my-7 text-xl">Join the platform that's revolutionizing internship management under NEP guidelines</p>
+        <button 
+        onClick={()=>setLoginOpen(true)}
+        className="px-5 p-3 bg-white rounded hover:scale-105 font-bold text-lg">Get Started</button>
         <h1 className="text-4xl font-bold text-white">
           Ready to Get Started ?
         </h1>
