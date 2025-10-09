@@ -12,7 +12,6 @@ const LoginPortal = ({ isOpen, onClose }) => {
     formState: { errors }
   } = useForm()
 
-  // ⚙️ Define the login mutation
   const loginMutation = useMutation({
     mutationFn: async (data) => {
       const res = await fetch("/api/login", {
@@ -30,7 +29,6 @@ const LoginPortal = ({ isOpen, onClose }) => {
       alert("Login successful!")
       console.log("User:", data)
       onClose()
-      // You can also store token in localStorage or redirect
     },
     onError: (error) => {
       alert(error.message || "Login failed!")
