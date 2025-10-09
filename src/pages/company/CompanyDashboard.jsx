@@ -53,11 +53,11 @@ const CompanyDashboard = () => {
   ]
 
   const [isOpen, setIsOpen] = useState(false)
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  // const [sidebarOpen, setSidebarOpen] = useState(true)
 
-  const handleSidebar = () =>{
-    setSidebarOpen(!sidebarOpen)
-  }
+  // const handleSidebar = () =>{
+  //   setSidebarOpen(!sidebarOpen)
+  // }
 
   return (
     <div className='flex relative' >
@@ -101,6 +101,7 @@ const CompanyDashboard = () => {
 
       {/* main content */}
       <main className={cn(
+
         "flex-1 sm:p-8 relative",
         sidebarOpen ? "": "pl-16"
       )}>
@@ -116,8 +117,8 @@ const CompanyDashboard = () => {
         </div>
 
         <PostPortal
-        isOpen={isOpen} 
-        onClose={()=> setIsOpen(false)}>
+          isOpen={isOpen} 
+          onClose={()=> setIsOpen(false)}>
         </PostPortal>
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-8 gap-5'>
