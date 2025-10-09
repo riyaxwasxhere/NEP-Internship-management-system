@@ -10,19 +10,19 @@ const CompanySidebar = () => {
         {
             name: "Dashboard", 
             path: "/company/dashboard", 
-            icon: <HomeIcon className="w-6 h-6" />, 
+            icon: <HomeIcon className="h-4 sm:h-4.5" />, 
             component: <CompanyDashboard /> 
         },
         {
             name: "My Internships",
             path: "/company/internships", 
-            icon: <Workflow className="w-6 h-6" />, 
+            icon: <Workflow className="h-4 sm:h-4.5" />, 
             component: <MyInternships /> 
         },
         { 
             name: "Applicants Approvals", 
             path: "/company/logbook", 
-            icon: <Users className="w-6 h-6" />, 
+            icon: <Users className="h-4 sm:h-4.5" />, 
             component: <Applicants /> 
         }
     ]

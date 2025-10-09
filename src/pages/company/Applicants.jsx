@@ -249,17 +249,17 @@ const Applicants = () => {
 
   return (
     <div>
-      <header className='flex justify-between p-5 sm:p-10'>
+      <header className='flex gap-5 justify-between pb-5 sm:p-10'>
         <div className='flex-1'>
-            <h1 className='text-lg sm:text-3xl font-bold'>Applicants</h1>
-            <p className='text-xs sm:text-[14px] text-gray-500'>View and manage all applicants</p>
+            <h1 className='text-2xl sm:text-4xl font-bold'>Applicants</h1>
+            <p className='text-sm text-gray-500'>View and manage all applicants</p>
         </div>
-        <div>
+        <div className='mt-2'>
             <SearchBar onSearch={handleSearch}/>
         </div>
       </header>
 
-      <div className='px-5 sm:px-10 grid grid-cols-1 md:grid-cols-2 gap-5'>
+      <div className=' sm:px-10 grid grid-cols-1 md:grid-cols-2 gap-5'>
         {applicants.map((intern)=>(
           <div className='hover:shadow-2xl hover:scale-102 cursor-pointer transition-all duration-300 ease-in-out'>
             <ApplicantCard

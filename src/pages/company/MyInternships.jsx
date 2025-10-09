@@ -75,18 +75,18 @@ const MyInternships = () => {
 
     return (
     <div>
-      <header className='flex justify-between p-5 sm:p-10'>
+      <header className='flex justify-between pb-4 sm:p-10 gap-4'>
         <div className='flex-1'>
-            <h1 className='text-lg sm:text-3xl font-bold'>My Internships</h1>
-            <p className='text-xs sm:text-[14px] text-gray-500'>View all your internships</p>
+            <h1 className='text-2xl sm:text-4xl font-bold'>My Internships</h1>
+            <p className='text-sm text-gray-500'>View all your internships</p>
         </div>
-        <div>
+        <div className='mt-2'>
             <SearchBar onSearch={handleSearch}/>
         </div>
       </header>
 
       {/* main content */}
-      <div className='px-5 sm:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+      <div className=' sm:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
         {internships.map((job)=>(
             <div className='hover:shadow-2xl hover:scale-102 cursor-pointer transition-all duration-300 ease-in-out' >
                 <InternshipCard
