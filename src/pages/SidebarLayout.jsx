@@ -1,10 +1,33 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation, Routes, Route, Navigate } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
-export default function SidebarLayout({ title = "Sidebar", menuItems = [], defaultRoute }) {
+export default function SidebarLayout({
+  title = "Sidebar",
+  menuItems = [],
+  defaultRoute,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    const result = await logout();
+
+    if (!result.success) {
+      alert("Error logging out!");
+      return;
+    }
+
+    navigate("/");
+  }
 
   // Dynamically detect base path like "faculty" or "company"
   const basePath = menuItems[0]?.path.split("/")[1] || "";
@@ -69,16 +92,25 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
                 if (window.innerWidth < 640) setIsOpen(false);
               }}
               className={`flex items-center p-2 rounded-lg transition-colors duration-300 w-full text-left
-                ${location.pathname === item.path ? "bg-blue-700" : "hover:bg-blue-500"}
+                ${
+                  location.pathname === item.path
+                    ? "bg-blue-700"
+                    : "hover:bg-blue-500"
+                }
               `}
             >
               <div className="flex-shrink-0 md:w-10 md:h-10 w-8 h-8  flex items-center justify-center bg-blue-700 rounded-md">
                 {item.icon}
               </div>
-              {isOpen && <span className="ml-4 text-white font-medium">{item.name}</span>}
+              {isOpen && (
+                <span className="ml-4 text-white font-medium">{item.name}</span>
+              )}
             </button>
           ))}
         </nav>
+        <button onClick={handleLogout} className="cursor-pointer">
+          Logout
+        </button>
       </aside>
 
       {/* Overlay for mobile */}
@@ -97,12 +129,19 @@ export default function SidebarLayout({ title = "Sidebar", menuItems = [], defau
       >
         <Routes>
           {/* Default Redirect */}
-          {defaultRoute && <Route index element={<Navigate to={defaultRoute} replace />} />}
+          {defaultRoute && (
+            <Route index element={<Navigate to={defaultRoute} replace />} />
+          )}
 
           {/* Render menu routes dynamically */}
           {menuItems.map((item, index) => {
-            const relativePath = item.path.replace(new RegExp(`^/${basePath}/`), "");
-            return <Route key={index} path={relativePath} element={item.component} />;
+            const relativePath = item.path.replace(
+              new RegExp(`^/${basePath}/`),
+              ""
+            );
+            return (
+              <Route key={index} path={relativePath} element={item.component} />
+            );
           })}
         </Routes>
       </main>

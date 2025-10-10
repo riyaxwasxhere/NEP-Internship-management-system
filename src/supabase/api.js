@@ -33,6 +33,58 @@ export const logout = async () => {
   }
 };
 
+// Get user role from user_roles table
+export const getUserRole = async (userId) => {
+  try {
+    const { data, error } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .single();
+
+    if (error) throw error;
+
+    return { success: true, data: data.role };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+// Get user details by role
+export const getUserDetailsByRole = async (userId, role) => {
+  try {
+    let tableName;
+    let columns = "*";
+
+    // Choose which table to query based on role
+    switch (role) {
+      case "student":
+        tableName = "students";
+        break;
+      case "faculty":
+        tableName = "faculty";
+        break;
+      case "company":
+        tableName = "companies";
+        break;
+      default:
+        return { success: false, error: "Invalid user role" };
+    }
+
+    const { data, error } = await supabase
+      .from(tableName)
+      .select(columns)
+      .eq("user_id", userId)
+      .single();
+
+    if (error) throw error;
+
+    return { success: true, data };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
 //
 // ─── INTERNSHIPS ───────────────────────────────────────────────────────────────
 //
