@@ -1,3 +1,4 @@
+import { useState } from "react";
 import StudentApplicationCard from "../../components/StudentApplicationCard";
 
 const statusColor = {
@@ -9,6 +10,8 @@ const statusColor = {
 };
 
 function MyApplications() {
+  const [applications, setApplication] = useState([]);
+
   const applicationCards = [
     {
       jobTitle: "Full Stack Developer Intern",
