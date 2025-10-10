@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import StudentApplicationCard from "../../components/StudentApplicationCard";
 import { getStudentApplications } from "../../supabase/api";
+import { useAuth } from "../../hooks/useAuth";
 
 const statusColor = {
   applied: "bg-gray-500",
@@ -11,46 +12,21 @@ const statusColor = {
 };
 
 function MyApplications() {
+  const { user } = useAuth();
   const [applications, setApplication] = useState([]);
 
   useEffect(() => {
+    if (!user) return;
     const getApplications = async () => {
-      const result = await getStudentApplications();
-      console.log(applications);
+      const result = await getStudentApplications(user.id);
       if (result.success) {
         setApplication(result.data);
       }
     };
     getApplications();
-  }, [applications]);
+  }, [user]);
 
-  // const applicationCards = [
-  //   {
-  //     jobTitle: "Full Stack Developer Intern",
-  //     company: "Tech Innovators",
-  //     status: "accepted",
-  //   },
-  //   {
-  //     jobTitle: "ML Engineer Intern",
-  //     company: "AI Solutions",
-  //     status: "pending",
-  //   },
-  //   {
-  //     jobTitle: "ML Engineer Intern",
-  //     company: "AI Solutions",
-  //     status: "applied",
-  //   },
-  //   {
-  //     jobTitle: "ML Engineer Intern",
-  //     company: "AI Solutions",
-  //     status: "rejected",
-  //   },
-  //   {
-  //     jobTitle: "ML Engineer Intern",
-  //     company: "AI Solutions",
-  //     status: "completed",
-  //   },
-  // ];
+  console.log(applications);
 
   return (
     <div className="p-2 md:p-10 bg-gray-100 min-h-screen">
@@ -60,6 +36,7 @@ function MyApplications() {
       </p>
       {applications.map((card) => (
         <StudentApplicationCard
+          key={card.id}
           title={card.internships.title}
           company={card.internships.companies.name}
           status={card.status}
