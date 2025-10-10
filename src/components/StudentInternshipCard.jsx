@@ -11,7 +11,6 @@ function StudentInternshipCard({
   location,
   duration,
   stipend,
-  status,
 }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -21,7 +20,7 @@ function StudentInternshipCard({
         <h3 className="font-medium text-lg">{jobTitle}</h3>
         <div>
           <p className="rounded-full px-3 py-1 text-white font-bold bg-green-500 text-s">
-            {status}
+            Approved
           </p>
         </div>
       </div>

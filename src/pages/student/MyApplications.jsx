@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import StudentApplicationCard from "../../components/StudentApplicationCard";
+import { getStudentApplications } from "../../supabase/api";
+import { useAuth } from "../../hooks/useAuth";
 
 const statusColor = {
   applied: "bg-gray-500",
@@ -9,33 +12,21 @@ const statusColor = {
 };
 
 function MyApplications() {
-  const applicationCards = [
-    {
-      jobTitle: "Full Stack Developer Intern",
-      company: "Tech Innovators",
-      status: "accepted",
-    },
-    {
-      jobTitle: "ML Engineer Intern",
-      company: "AI Solutions",
-      status: "pending",
-    },
-    {
-      jobTitle: "ML Engineer Intern",
-      company: "AI Solutions",
-      status: "applied",
-    },
-    {
-      jobTitle: "ML Engineer Intern",
-      company: "AI Solutions",
-      status: "rejected",
-    },
-    {
-      jobTitle: "ML Engineer Intern",
-      company: "AI Solutions",
-      status: "completed",
-    },
-  ];
+  const { user } = useAuth();
+  const [applications, setApplication] = useState([]);
+
+  useEffect(() => {
+    if (!user) return;
+    const getApplications = async () => {
+      const result = await getStudentApplications(user.id);
+      if (result.success) {
+        setApplication(result.data);
+      }
+    };
+    getApplications();
+  }, [user]);
+
+  console.log(applications);
 
   return (
     <div className="p-2 md:p-10 bg-gray-100 min-h-screen">
@@ -43,10 +34,11 @@ function MyApplications() {
       <p className="mt-2 text-s text-gray-500">
         See your application status here
       </p>
-      {applicationCards.map((card) => (
+      {applications.map((card) => (
         <StudentApplicationCard
-          title={card.jobTitle}
-          company={card.company}
+          key={card.id}
+          title={card.internships.title}
+          company={card.internships.companies.name}
           status={card.status}
           statusColor={statusColor[card.status]}
         />
