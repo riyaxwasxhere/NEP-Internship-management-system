@@ -89,15 +89,42 @@ export const getUserDetailsByRole = async (userId, role) => {
 // ─── INTERNSHIPS ───────────────────────────────────────────────────────────────
 //
 
-// Verify internship (faculty)
-export const verifyInternship = async (internshipId) => {
+// Faculty verifies or rejects an internship
+export const updateInternshipVerificationStatus = async (
+  internshipId,
+  action
+) => {
   try {
-    const { data, error } = await supabase
-      .from("internships")
-      .update({ verified: true })
-      .eq("id", internshipId)
-      .select();
-    return handleResponse(data, error);
+    if (action === "verify") {
+      // Approve → mark verified true
+      const { data, error } = await supabase
+        .from("internships")
+        .update({ verified: true })
+        .eq("id", internshipId)
+        .select();
+
+      return handleResponse(data, error);
+    }
+
+    if (action === "reject") {
+      // Reject → delete internship permanently
+      const { error } = await supabase
+        .from("internships")
+        .delete()
+        .eq("id", internshipId);
+
+      if (error) throw error;
+      return {
+        success: true,
+        data: `Internship ${internshipId} deleted successfully.`,
+      };
+    }
+
+    // Invalid action
+    return {
+      success: false,
+      error: "Invalid action. Use 'verify' or 'reject'.",
+    };
   } catch (err) {
     return { success: false, error: err.message };
   }
