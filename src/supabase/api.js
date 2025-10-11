@@ -552,7 +552,7 @@ export const getStudentApplicationsWithCompany = async (studentId) => {
       )
       .eq("student_id", studentId)
       .eq("status", "accepted") // ✅ only accepted applications
-      .order("created_at", { ascending: false });
+      .order("applied_at", { ascending: false });
 
     return handleResponse(data, error);
   } catch (err) {

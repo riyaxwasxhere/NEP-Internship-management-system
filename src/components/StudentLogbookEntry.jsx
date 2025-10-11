@@ -1,11 +1,62 @@
+import { useEffect, useState } from "react";
+import { addLogbookEntry, getStudentApplications } from "../supabase/api";
+import { useAuth } from "../hooks/useAuth";
+
 function StudentLogbookEntry() {
+  const [applicationId, setApplicationId] = useState();
+  const [description, setDescription] = useState();
+  const [entries, setEntries] = useState([]);
+  const { user } = useAuth();
+
+  const handleSubmitEntry = async (e) => {
+    e.preventDefault();
+    const result = await addLogbookEntry(
+      applicationId,
+      new Date().toISOString(),
+      description
+    );
+    console.log(applicationId);
+    if (result.success) {
+      alert("Entry Submitted Successfully");
+      setDescription("");
+    } else {
+      console.log(result.error);
+    }
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    const getEntries = async () => {
+      const result = await getStudentApplications(user.id);
+      const filteredResult = result.data.filter(
+        (entry) => entry.status == "accepted"
+      );
+      console.log(filteredResult);
+      if (result.success) {
+        setEntries(filteredResult);
+        console.log(result.data);
+      } else {
+        console.log(result.error);
+      }
+    };
+    getEntries();
+  }, [user]);
+
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">
       <div className="flex justify-between items-start">
         <h2 className="font-medium text-2xl text-black">Add New Entry</h2>
-        <select name="" id="" className="p-2 rounded-lg ">
-          <option value="">All</option>
-          <option value="">Accepted Internships</option>
+        <select
+          onChange={(e) => setApplicationId(e.target.value)}
+          name=""
+          id=""
+          className="p-2 rounded-lg "
+        >
+          {entries?.map((entry) => {
+            console.log(entry);
+            console.log(entry.internships.title);
+            return <option value={entry.id}>{entry.internships.title}</option>;
+          })}
         </select>
       </div>
       <p className="text-s text-gray-500">
@@ -15,10 +66,15 @@ function StudentLogbookEntry() {
         Today's Work Description
       </h3>
       <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         className="w-full h-36 rounded-md bg-gray-100 p-2 mt-2"
         placeholder="Describe what you worked on today, what you learned, and any challenges you faced."
       ></textarea>
-      <button className="p-2 mt-2 bg-blue-600 font-medium text-white rounded-md">
+      <button
+        onClick={handleSubmitEntry}
+        className="p-2 mt-2 bg-blue-600 font-medium text-white rounded-md"
+      >
         Submit Entry
       </button>
     </div>
