@@ -85,6 +85,69 @@ export const getUserDetailsByRole = async (userId, role) => {
   }
 };
 
+///////stats for students//////////
+// Get all key dashboard stats for a specific student
+export const getStudentDashboardStats = async (studentId) => {
+  try {
+    // 1️⃣ Total credits earned
+    const { data: creditsData, error: creditsError } = await supabase
+      .from("credits")
+      .select("credit_points, applications!inner(student_id)")
+      .eq("applications.student_id", studentId);
+
+    if (creditsError) throw creditsError;
+    const totalCredits = creditsData.reduce(
+      (sum, c) => sum + (c.credit_points || 0),
+      0
+    );
+
+    // 2️⃣ Total internship applications
+    const { count: applicationsCount, error: appError } = await supabase
+      .from("applications")
+      .select("*", { count: "exact", head: true })
+      .eq("student_id", studentId);
+
+    if (appError) throw appError;
+
+    // 3️⃣ Active internships (status = accepted or completed)
+    const { count: activeCount, error: activeError } = await supabase
+      .from("applications")
+      .select("*", { count: "exact", head: true })
+      .eq("student_id", studentId)
+      .in("status", ["accepted", "completed"]);
+
+    if (activeError) throw activeError;
+
+    // 4️⃣ Total logbook entries across all internships
+    const { count: logbookCount, error: logError } = await supabase
+      .from("logbook_entries")
+      .select("*", { count: "exact", head: true })
+      .in(
+        "application_id",
+        (
+          await supabase
+            .from("applications")
+            .select("id")
+            .eq("student_id", studentId)
+        ).data?.map((a) => a.id) || []
+      );
+
+    if (logError) throw logError;
+
+    // ✅ Final stats object
+    const stats = {
+      totalCredits,
+      totalApplications: applicationsCount || 0,
+      activeInternships: activeCount || 0,
+      totalLogbookEntries: logbookCount || 0,
+    };
+
+    return { success: true, data: stats };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
 //
 // ─── INTERNSHIPS ───────────────────────────────────────────────────────────────
 //
