@@ -305,14 +305,75 @@ export const addLogbookEntry = async (applicationId, date, description) => {
   }
 };
 
-// Get all unverified logbook entries for an applicant
-export const getUnverifiedLogbookEntries = async (applicationId) => {
+//Get all student logbooks (applications) for a faculty (only accepted or completed)
+export const getFacultyLogbooks = async (facultyId) => {
+  try {
+    // Get the faculty's college_id
+    const { data: facultyData, error: facultyError } = await supabase
+      .from("faculty")
+      .select("college_id")
+      .eq("id", facultyId)
+      .single();
+
+    if (facultyError) throw facultyError;
+
+    // Get all student IDs under the same college
+    const { data: studentData, error: studentError } = await supabase
+      .from("students")
+      .select("id")
+      .eq("college_id", facultyData.college_id);
+
+    if (studentError) throw studentError;
+    const studentIds = studentData?.map((s) => s.id) || [];
+
+    if (studentIds.length === 0) {
+      return { success: true, data: [] }; // No students
+    }
+
+    // Get all applications for those students with status accepted or completed
+    const { data, error } = await supabase
+      .from("applications")
+      .select(
+        `
+        id,
+        status,
+        internships(title, duration, location, companies(name)),
+        students(full_name, email, department, year),
+        logbook_entries(count)
+      `
+      )
+      .in("student_id", studentIds)
+      .in("status", ["accepted", "completed"]);
+
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+// Get all logbook entries for a given student’s internship
+export const getAllLogbookEntries = async (applicationId) => {
   try {
     const { data, error } = await supabase
       .from("logbook_entries")
       .select("*")
       .eq("application_id", applicationId)
-      .eq("verified", false);
+      .order("date", { ascending: true });
+
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+//Verify a specific logbook entry
+export const verifyLogbookEntry = async (entryId) => {
+  try {
+    const { data, error } = await supabase
+      .from("logbook_entries")
+      .update({ verified: true })
+      .eq("id", entryId)
+      .select();
     return handleResponse(data, error);
   } catch (err) {
     return { success: false, error: err.message };
@@ -338,6 +399,34 @@ export const assignCredit = async (
         },
       ])
       .select();
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+// Get all credits assigned by a specific faculty
+export const getCreditAssignmentHistory = async (facultyId) => {
+  try {
+    const { data, error } = await supabase
+      .from("credits")
+      .select(
+        `
+        id,
+        credit_points,
+        remarks,
+        created_at,
+        applications (
+          id,
+          status,
+          students ( full_name, email, department, year ),
+          internships ( title, duration, companies ( name ) )
+        )
+      `
+      )
+      .eq("faculty_id", facultyId)
+      .order("created_at", { ascending: false });
+
     return handleResponse(data, error);
   } catch (err) {
     return { success: false, error: err.message };
