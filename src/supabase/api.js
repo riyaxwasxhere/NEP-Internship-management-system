@@ -89,6 +89,20 @@ export const getUserDetailsByRole = async (userId, role) => {
 // ─── INTERNSHIPS ───────────────────────────────────────────────────────────────
 //
 
+// Verify internship (faculty)
+export const verifyInternship = async (internshipId) => {
+  try {
+    const { data, error } = await supabase
+      .from("internships")
+      .update({ verified: true })
+      .eq("id", internshipId)
+      .select();
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
 // Get all verified internships (visible to students)
 export const getVerifiedInternships = async () => {
   try {
@@ -96,6 +110,20 @@ export const getVerifiedInternships = async () => {
       .from("internships")
       .select("*, companies(name, email, location)")
       .eq("verified", true);
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+// Get all unverified internships (for faculty to approve)
+export const getUnverifiedInternshipsForFaculty = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("internships")
+      .select("*, companies(name, email, location)")
+      .eq("verified", false);
+
     return handleResponse(data, error);
   } catch (err) {
     return { success: false, error: err.message };
@@ -309,20 +337,6 @@ export const assignCredit = async (
           remarks,
         },
       ])
-      .select();
-    return handleResponse(data, error);
-  } catch (err) {
-    return { success: false, error: err.message };
-  }
-};
-
-// Verify internship (faculty)
-export const verifyInternship = async (internshipId) => {
-  try {
-    const { data, error } = await supabase
-      .from("internships")
-      .update({ verified: true })
-      .eq("id", internshipId)
       .select();
     return handleResponse(data, error);
   } catch (err) {
