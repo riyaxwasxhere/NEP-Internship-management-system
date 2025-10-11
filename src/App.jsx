@@ -5,6 +5,8 @@ import FacultySidebar from "./pages/faculty/FacultySidebar";
 import CompanySidebar from "./pages/company/CompanySidebar";
 import LoginPortal from "./LoginPortal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import StudentEntrySection from "./components/StudentEntrySection";
+import Logbook from "./pages/student/Logbook";
 
 const queryClient = new QueryClient();
 
@@ -15,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/student/*" element={<StudentSidebar />} />
+          <Route path="/student/logbook/:applicationId" element={<Logbook />} />
           <Route path="/faculty/*" element={<FacultySidebar />} />
           <Route path="/company/*" element={<CompanySidebar />} />
           <Route path="/login" element={<LoginPortal />} />

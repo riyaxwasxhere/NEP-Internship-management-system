@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import StudentApplicationCard from "../../components/StudentApplicationCard";
 import { getStudentApplications } from "../../supabase/api";
 import { useAuth } from "../../hooks/useAuth";
@@ -14,6 +15,7 @@ const statusColor = {
 function MyApplications() {
   const { user } = useAuth();
   const [applications, setApplication] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) return;
@@ -26,7 +28,15 @@ function MyApplications() {
     getApplications();
   }, [user]);
 
-  console.log(applications);
+  const handleCardClick = (card) => {
+    if (card.status === "accepted") {
+      navigate(`/student/logbook/${card.id}`);
+    } else {
+      alert(
+        "You can access the logbook only after your application is accepted."
+      );
+    }
+  };
 
   return (
     <div className="p-2 md:p-10 bg-gray-100 min-h-screen">
@@ -35,13 +45,19 @@ function MyApplications() {
         See your application status here
       </p>
       {applications.map((card) => (
-        <StudentApplicationCard
+        <div
           key={card.id}
-          title={card.internships.title}
-          company={card.internships.companies.name}
-          status={card.status}
-          statusColor={statusColor[card.status]}
-        />
+          onClick={() => handleCardClick(card)}
+          className="cursor-pointer"
+        >
+          <StudentApplicationCard
+            key={card.id}
+            title={card.internships.title}
+            company={card.internships.companies.name}
+            status={card.status}
+            statusColor={statusColor[card.status]}
+          />
+        </div>
       ))}
       <p></p>
     </div>
