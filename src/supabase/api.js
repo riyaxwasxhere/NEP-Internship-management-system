@@ -487,6 +487,72 @@ export const getAllLogbookEntries = async (applicationId) => {
   }
 };
 
+//for🐔
+// Get all logbook entries for a student (most recent first)
+export const getStudentLogbookEntries = async (studentId) => {
+  try {
+    const { data, error } = await supabase
+      .from("logbook_entries")
+      .select(
+        `
+        id,
+        date,
+        description,
+        verified,
+        applications (
+          id,
+          internships (
+            title,
+            duration,
+            companies ( name )
+          )
+        )
+      `
+      )
+      .in(
+        "application_id",
+        (
+          await supabase
+            .from("applications")
+            .select("id")
+            .eq("student_id", studentId)
+        ).data?.map((a) => a.id) || []
+      )
+      .order("date", { ascending: false }); // Newest entries first
+
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+//for 🐔
+// Get all accepted applications of a student with company + internship info
+export const getStudentApplicationsWithCompany = async (studentId) => {
+  try {
+    const { data, error } = await supabase
+      .from("applications")
+      .select(
+        `
+        id,
+        status,
+        internships (
+          title,
+          duration,
+          companies ( name )
+        )
+      `
+      )
+      .eq("student_id", studentId)
+      .eq("status", "accepted") // ✅ only accepted applications
+      .order("created_at", { ascending: false });
+
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
 //Verify a specific logbook entry
 export const verifyLogbookEntry = async (entryId) => {
   try {
