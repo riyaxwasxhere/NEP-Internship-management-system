@@ -152,6 +152,37 @@ export const getStudentDashboardStats = async (studentId) => {
 // ─── INTERNSHIPS ───────────────────────────────────────────────────────────────
 //
 
+// Get all internships posted by a particular company
+export const getCompanyInternships = async (companyId) => {
+  try {
+    const { data, error } = await supabase
+      .from("internships")
+      .select(
+        `
+        id,
+        title,
+        description,
+        location,
+        stipend,
+        duration,
+        verified,
+        created_at,
+        applications (
+          id,
+          status,
+          students ( full_name, email, department, year )
+        )
+      `
+      )
+      .eq("company_id", companyId)
+      .order("created_at", { ascending: false });
+
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
 // Faculty verifies or rejects an internship
 export const updateInternshipVerificationStatus = async (
   internshipId,
