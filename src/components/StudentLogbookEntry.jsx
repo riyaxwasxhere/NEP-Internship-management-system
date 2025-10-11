@@ -1,7 +1,13 @@
 function StudentLogbookEntry() {
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">
-      <h2 className="font-medium text-2xl text-black">Add New Entry</h2>
+      <div className="flex justify-between items-start">
+        <h2 className="font-medium text-2xl text-black">Add New Entry</h2>
+        <select name="" id="" className="p-2 rounded-lg ">
+          <option value="">All</option>
+          <option value="">Accepted Internships</option>
+        </select>
+      </div>
       <p className="text-s text-gray-500">
         Document your daily work and progress
       </p>

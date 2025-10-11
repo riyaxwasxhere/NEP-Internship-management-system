@@ -8,12 +8,12 @@ function StudentEntrySection() {
   const { applicationId } = useParams();
 
   useEffect(() => {
-    const fetchEntries = async () => {
+    const getEntries = async () => {
       const result = await getAllLogbookEntries(applicationId);
       if (result.success) setEntries(result.data);
     };
 
-    if (applicationId) fetchEntries();
+    if (applicationId) getEntries();
   }, [applicationId]);
 
   // const entries = [

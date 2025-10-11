@@ -17,7 +17,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/student/*" element={<StudentSidebar />} />
-          <Route path="/student/logbook/:applicationId" element={<Logbook />} />
           <Route path="/faculty/*" element={<FacultySidebar />} />
           <Route path="/company/*" element={<CompanySidebar />} />
           <Route path="/login" element={<LoginPortal />} />
