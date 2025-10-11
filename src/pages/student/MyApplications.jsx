@@ -26,8 +26,6 @@ function MyApplications() {
     getApplications();
   }, [user]);
 
-  console.log(applications);
-
   return (
     <div className="p-2 md:p-10 bg-gray-100 min-h-screen">
       <h1 className="font-bold text-4xl">Applications</h1>

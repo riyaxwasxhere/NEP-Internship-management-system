@@ -5,6 +5,8 @@ import FacultySidebar from "./pages/faculty/FacultySidebar";
 import CompanySidebar from "./pages/company/CompanySidebar";
 import LoginPortal from "./LoginPortal";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import StudentEntrySection from "./components/StudentEntrySection";
+import Logbook from "./pages/student/Logbook";
 
 const queryClient = new QueryClient();
 
