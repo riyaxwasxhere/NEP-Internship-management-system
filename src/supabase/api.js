@@ -251,14 +251,17 @@ export const getUnverifiedInternshipsForFaculty = async () => {
   }
 };
 
-// Create new internship (company)
+// Create a new internship (for companies)
 export const createInternship = async (
   companyId,
   title,
   description,
   location,
   stipend,
-  duration
+  duration,
+  domain,
+  applyDate,
+  startDate
 ) => {
   try {
     const { data, error } = await supabase
@@ -271,10 +274,14 @@ export const createInternship = async (
           location,
           stipend,
           duration,
+          domain,
+          apply_date: applyDate,
+          start_date: startDate,
           verified: false,
         },
       ])
       .select();
+
     return handleResponse(data, error);
   } catch (err) {
     return { success: false, error: err.message };
