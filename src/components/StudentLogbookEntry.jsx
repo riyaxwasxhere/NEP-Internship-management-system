@@ -23,6 +23,8 @@ function StudentLogbookEntry({ applicationId, setApplicationId }) {
     }
   };
 
+  console.log(applicationId);
+
   useEffect(() => {
     if (!user) return;
     const getEntries = async () => {
@@ -34,7 +36,7 @@ function StudentLogbookEntry({ applicationId, setApplicationId }) {
       if (result.success) {
         setApplicationId(filteredResult[0].id);
         setEntries(filteredResult);
-        console.log(result.data);
+        setApplicationId(filteredResult[0].id);
       } else {
         console.log(result.error);
       }
@@ -53,8 +55,6 @@ function StudentLogbookEntry({ applicationId, setApplicationId }) {
           className="p-2 rounded-lg "
         >
           {entries?.map((entry) => {
-            console.log(entry);
-            console.log(entry.internships.title);
             return <option value={entry.id}>{entry.internships.title}</option>;
           })}
         </select>
