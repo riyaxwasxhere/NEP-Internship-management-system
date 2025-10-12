@@ -626,3 +626,74 @@ export const getCreditAssignmentHistory = async (facultyId) => {
     return { success: false, error: err.message };
   }
 };
+
+// Get all verified internships with no assigned credits (for a faculty)
+export const getPendingCreditAssignments = async (facultyId) => {
+  try {
+    // Step 1️⃣: Get faculty's college
+    const { data: facultyData, error: facultyError } = await supabase
+      .from("faculty")
+      .select("college_id")
+      .eq("id", facultyId)
+      .single();
+
+    if (facultyError) throw facultyError;
+    const collegeId = facultyData.college_id;
+
+    // Step 2️⃣: Get all students under this college
+    const { data: studentsData, error: studentsError } = await supabase
+      .from("students")
+      .select("id, full_name, email, department, year")
+      .eq("college_id", collegeId);
+
+    if (studentsError) throw studentsError;
+    const studentIds = studentsData.map((s) => s.id);
+
+    // Step 3️⃣: Fetch completed applications with verified internships and no credits
+    const { data, error } = await supabase
+      .from("applications")
+      .select(
+        `
+        id,
+        status,
+        internships (
+          id,
+          title,
+          duration,
+          verified,
+          companies ( name )
+        ),
+        students (
+          full_name,
+          email,
+          department,
+          year
+        ),
+        logbook_entries ( id, verified )
+      `
+      )
+      .in("student_id", studentIds)
+      .eq("status", "completed")
+      .eq("internships.verified", true)
+      .not("id", "in", supabase.from("credits").select("application_id"));
+
+    if (error) throw error;
+
+    // Step 4️⃣: Aggregate logbook entry count
+    const formattedData = data.map((app) => ({
+      application_id: app.id,
+      student_name: app.students.full_name,
+      email: app.students.email,
+      internship_title: app.internships.title,
+      company_name: app.internships.companies.name,
+      duration: app.internships.duration,
+      total_entries: app.logbook_entries?.length || 0,
+      verified_entries:
+        app.logbook_entries?.filter((e) => e.verified).length || 0,
+    }));
+
+    return handleResponse(formattedData, null);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
