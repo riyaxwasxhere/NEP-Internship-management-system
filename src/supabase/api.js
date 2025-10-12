@@ -384,6 +384,7 @@ export const getStudentApplications = async (studentId) => {
   }
 };
 
+//for ®️ℹ️y🅰️
 // ✅ Get all applicants for internships posted by a company
 export const getCompanyApplications = async (companyId) => {
   try {
@@ -410,6 +411,55 @@ export const getCompanyApplications = async (companyId) => {
 
     return handleResponse(data, error);
   } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+//for ®️ℹ️y🅰️
+// Get all approved interns (accepted applications) for a specific company
+export const getApprovedInternsByCompany = async (companyId) => {
+  try {
+    const { data, error } = await supabase
+      .from("applications")
+      .select(
+        `
+        id,
+        status,
+        students (
+          full_name,
+          email,
+          department,
+          year
+        ),
+        internships (
+          id,
+          title,
+          duration,
+          companies ( id, name )
+        )
+      `
+      )
+      .eq("status", "accepted") // ✅ Only approved interns
+      .eq("internships.company_id", companyId)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    // Optional: flatten data for easier UI usage
+    const formatted = data.map((app) => ({
+      application_id: app.id,
+      student_name: app.students?.full_name,
+      student_email: app.students?.email,
+      department: app.students?.department,
+      year: app.students?.year,
+      internship_title: app.internships?.title,
+      duration: app.internships?.duration,
+      company_name: app.internships?.companies?.name,
+    }));
+
+    return { success: true, data: formatted };
+  } catch (err) {
+    console.error("Error fetching approved interns:", err.message);
     return { success: false, error: err.message };
   }
 };
