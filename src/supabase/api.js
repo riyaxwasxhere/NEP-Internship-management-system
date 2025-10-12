@@ -284,6 +284,7 @@ export const createInternship = async (
 
     return handleResponse(data, error);
   } catch (err) {
+    console.log(err);
     return { success: false, error: err.message };
   }
 };

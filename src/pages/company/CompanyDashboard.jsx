@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -14,6 +14,8 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIcon, UsersIcon, WorkflowIcon, X } from 'lucide-react';
 import PostPortal from './PostPortal';
 import InternshipCard from './InternshipCard';
+import { getCompanyInternships } from '../../supabase/api';
+import { useAuth } from "../../hooks/useAuth"
 
 
 const CompanyDashboard = () => {
@@ -31,28 +33,51 @@ const CompanyDashboard = () => {
     { label: "Completed", value: 12 },
   ]
 
-  const internships = [
-    {
-      title: "Full Stack Developer Intern",
-      status: "Approved",
-      posted: "06-10-2025",
-      location: "Bangalore, Karnataka",
-      duration: "3 months",
-      stipend: "₹15,000/month",
-      applicants: 24,
-    },
-    {
-      title: "ML Engineer Intern",
-      status: "Pending",
-      posted: "06-10-2025",
-      location: "Mumbai, Maharashtra",
-      duration: "6 months",
-      stipend: "₹20,000/month",
-      applicants: 18,
-    },
-  ]
+  // const internships = [
+  //   {
+  //     title: "Full Stack Developer Intern",
+  //     status: "Approved",
+  //     posted: "06-10-2025",
+  //     location: "Bangalore, Karnataka",
+  //     duration: "3 months",
+  //     stipend: "₹15,000/month",
+  //     applicants: 24,
+  //   },
+  //   {
+  //     title: "ML Engineer Intern",
+  //     status: "Pending",
+  //     posted: "06-10-2025",
+  //     location: "Mumbai, Maharashtra",
+  //     duration: "6 months",
+  //     stipend: "₹20,000/month",
+  //     applicants: 18,
+  //   },
+  // ]
 
   const [isOpen, setIsOpen] = useState(false)
+  const { user } = useAuth();
+  const [internships, setInternships] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true)
+  const [ error, setError ] = useState(null)
+  useEffect(()=>{
+          if(!user) return
+          const fetchInternships = async () => {
+              try{
+                  setIsLoading(true)
+                  setError(null)
+                  const response = await getCompanyInternships(user.id)
+                  if(response.success){
+                      setInternships(response.data)
+                  }
+              }catch(err){
+                  console.error(err.message)
+                  setError(err.message)
+              }finally{
+                  setIsLoading(false)
+              }
+          }
+          fetchInternships()
+      },[user])
   // const [sidebarOpen, setSidebarOpen] = useState(true)
 
   // const handleSidebar = () =>{
@@ -103,7 +128,7 @@ const CompanyDashboard = () => {
       <main className={cn(
 
         "flex-1 sm:p-8 relative",
-        sidebarOpen ? "": "pl-16"
+        
       )}>
         <div className='flex justify-between gap-5'>
           <div className='flex-1'>
@@ -117,6 +142,7 @@ const CompanyDashboard = () => {
         </div>
 
         <PostPortal
+          companyId = {user.id}
           isOpen={isOpen} 
           onClose={()=> setIsOpen(false)}>
         </PostPortal>
@@ -144,13 +170,14 @@ const CompanyDashboard = () => {
             <p className='text-gray-500 text-sm'>Manage your internship opportunities</p>
           </div>
 
-          {internships.map((job)=>(
+          {internships.slice(0,2).map((job)=>(
             <InternshipCard
             title={job.title}
+            posted={job.created_at}
             location={job.location}
             duration={job.duration}
             stipend={job.stipend}
-            applicants={job.applicants}
+            applicants={job.applicants || 0}
             />
           ))}
         </Card>

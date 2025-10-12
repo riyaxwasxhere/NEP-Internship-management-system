@@ -20,8 +20,8 @@ const CompanySidebar = () => {
             component: <MyInternships /> 
         },
         { 
-            name: "Applicants Approvals", 
-            path: "/company/logbook", 
+            name: "Applicants", 
+            path: "/company/applicants", 
             icon: <Users className="h-4 sm:h-4.5" />, 
             component: <Applicants /> 
         }
