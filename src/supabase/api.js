@@ -277,6 +277,7 @@ export const createInternship = async (
       .select();
     return handleResponse(data, error);
   } catch (err) {
+    console.log(err);
     return { success: false, error: err.message };
   }
 };

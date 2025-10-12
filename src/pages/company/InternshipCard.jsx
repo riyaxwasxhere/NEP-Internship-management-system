@@ -16,15 +16,17 @@ import InternshipDetails from './InternshipDetails';
 
 const InternshipCard = ({ title, posted, location, duration, stipend, applicants }) => {
   const [isOpen, setIsOpen ] = useState(false)
-
+  const datePosted = posted.split('T')
+  const finalDate = datePosted[0]
+  console.log(datePosted[0])
 
   return (
     <div>
-      <Card>
+      <Card className=' hover:shadow-2xl hover:scale-102 cursor-pointer transition-all duration-300 ease-in-out' >
             <CardHeader className='flex items-center justify-between'>
                 <div className='flex flex-col gap-1'>
                   <h3 className='text-sm sm:text-lg font-semibold'>{title}</h3>
-                  <p className='text-xs sm:text-sm'>{posted}</p>
+                  <p className='text-xs sm:text-sm'>{finalDate}</p>
                   {/* <Badge 
                     variant = "secondary"
                     className={cn(
@@ -54,7 +56,7 @@ const InternshipCard = ({ title, posted, location, duration, stipend, applicants
 
                 <InternshipDetails
                 title={title}
-                posted={posted}
+                posted={finalDate}
                 location={location}
                 duration={duration}
                 stipend={stipend}

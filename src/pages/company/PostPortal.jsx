@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {createPortal} from 'react-dom'
 import { Button } from "@/components/ui/button"
 import { X } from 'lucide-react'
@@ -6,8 +6,51 @@ import { X } from 'lucide-react'
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { createInternship } from '../../supabase/api';
+import { useAuth } from "../../hooks/useAuth"
 
-const PostPortal = ({ isOpen, onClose }) => {
+const PostPortal = ({ isOpen, onClose, companyId }) => {
+    const [title, setTitle] = useState("")
+    const [domain, setDomain] = useState("")
+    const [duration, setDuration] = useState("")
+    const [stipend, setStipend] = useState("")
+    const [startDate, setStartDate] = useState("")
+    const [applyBy, setApplyBy] = useState("")
+    const [location, setLocation] = useState("")
+    const [description, setDescription] = useState("")
+
+    const { user } = useAuth()
+    
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        const result = await createInternship(
+            companyId,
+            title, 
+            description, 
+            location, 
+            stipend, 
+            duration,
+            startDate,
+            applyBy
+        )
+
+        if(result.success) {
+            alert("Posted Successfully!")
+            setTitle("")
+            setDuration("")
+            setStipend("")
+            setStartDate("")
+            setApplyBy("")
+            setLocation("")
+            setDescription("")
+            onClose()
+        }else{
+            alert("Error: "+ result.error)
+        }
+    }
+
   if(!isOpen) return null
 
   return createPortal(
@@ -23,92 +66,125 @@ const PostPortal = ({ isOpen, onClose }) => {
             </div>
             <p className='text-gray-500 text-sm sm:text-lg text-center'>Create a new internship opportunity for students</p>
         </div>
-        <form action="" className='flex flex-col gap-2'>
+        <form 
+            onSubmit={handleSubmit}
+            action="" 
+            className='flex flex-col gap-2'>
+            
+            {/* title */}
             <div className='flex flex-col gap-1'>
             <Label 
-            className='text-lg sm:text-xl'
-            htmlFor='title'>Internship Title</Label>
+                className='text-lg sm:text-xl'
+                htmlFor='title'>Internship Title
+            </Label>
+
             <Input 
-            className='text-sm sm:text-lg'
-            id='title' 
-            placeholder='e.g., Full Stack Developer Intern
-            ' />
+                value={title}
+                onChange = {e=> setTitle(e.target.value)}
+                className='text-sm sm:text-lg'
+                id='title' 
+                placeholder='e.g., Full Stack Developer Intern' 
+            />
             </div>
+
+            {/* domain */}
             <div className='flex flex-col gap-1'>
                 <Label 
-                className='text-lg sm:text-xl'
-                htmlFor='domain'>Domain</Label>
+                    className='text-lg sm:text-xl'
+                    htmlFor='domain'>Domain</Label>
                 <Input
-                className='text-sm sm:text-lg'
-                id='domain' 
-                placeholder='e.g., Software Development, Data Science' />
+                    value={domain}
+                    onChange={e => setDomain(e.target.value)}
+                    className='text-sm sm:text-lg'
+                    id='domain' 
+                    placeholder='e.g., Software Development, Data Science' />
             </div>
 
             <div className='grid grid-cols-2 items-center justify-between gap-5'>
+
+                {/* duration */}
                 <div className='flex flex-col gap-1'>
                     <Label 
-                    className='text-lg sm:text-xl'
-                    htmlFor='duration'>Duration</Label>
+                        className='text-lg sm:text-xl'
+                        htmlFor='duration'>Duration</Label>
                     <Input 
-                    className='text-sm sm:text-lg'
-                    id='duration' 
-                    placeholder='e.g., 3 months' />
+                        value={duration}
+                        onChange={e => setDuration(e.target.value)}
+                        className='text-sm sm:text-lg'
+                        id='duration' 
+                        placeholder='e.g., 3 months' />
                 </div>
+
                 <div className='flex flex-col gap-1'>
+                    {/* stipend */}
                     <Label 
-                    className='text-lg sm:text-xl'
-                    htmlFor='stipend'>Stipend</Label>
+                        className='text-lg sm:text-xl'
+                        htmlFor='stipend'>Stipend</Label>
                     <Input 
-                    className='text-sm sm:text-lg'
-                    id='stipend' 
-                    placeholder='e.g., ₹15,000/month' />
+                        value={stipend}
+                        onChange={e => setStipend(e.target.value)}
+                        className='text-sm sm:text-lg'
+                        id='stipend' 
+                        placeholder='e.g., ₹15,000/month' />
                 </div>
             </div>
             
             <div className='grid grid-cols-2 items-center justify-between gap-5'>
                 <div className='flex flex-col gap-1'>
                     <Label 
-                    className='text-lg sm:text-xl'
-                    htmlFor='duration'>Start Date</Label>
+                        className='text-lg sm:text-xl'
+                        htmlFor='startDate'>Start Date</Label>
                     <Input 
-                    className='text-sm sm:text-lg'
-                    id='duration' 
-                    placeholder='e.g., Immediately' />
+                        value={startDate}
+                        onChange={e=>setStartDate(e.target.value)}
+                        className='text-sm sm:text-lg'
+                        id='startDate' 
+                        placeholder='e.g., Immediately' />
                 </div>
                 <div className='flex flex-col gap-1'>
                     <Label 
-                    className='text-lg sm:text-xl'
-                    htmlFor='stipend'>Apply By</Label>
+                        className='text-lg sm:text-xl'
+                        htmlFor='applyBy'>Apply By</Label>
                     <Input 
-                    className='text-sm sm:text-lg'
-                    id='stipend' 
-                    placeholder='e.g., 10-10-25' />
+                        value={applyBy}
+                        onChange={e=>setApplyBy(e.target.value)}
+                        className='text-sm sm:text-lg'
+                        id='applyBy' 
+                        placeholder='e.g., 10-10-25' />
                 </div>
             </div>
 
             <div className='flex flex-col gap-1'>
                 <Label 
-                className='text-lg sm:text-xl'
-                htmlFor='loc'>Location</Label>
+                    className='text-lg sm:text-xl'
+                    htmlFor='location'>Location</Label>
                 <Input 
-                className='text-sm sm:text-lg'
-                id='loc'
-                placeholder='e.g., Bangalore, Karnataka or remote' />
+                    value={location}
+                    onChange={e=>setLocation(e.target.value)}
+                    className='text-sm sm:text-lg'
+                    id='location'
+                    placeholder='e.g., Bangalore, Karnataka or remote' />
             </div>
             <div className='flex flex-col gap-1'>
                 <Label 
-                className='text-lg sm:text-xl'
-                htmlFor='Description'>Internship Description</Label>
+                    className='text-lg sm:text-xl'
+                    htmlFor='description'>Internship Description</Label>
                 <Textarea 
-                className='text-sm sm:text-lg'
-                id='title' 
-                placeholder='Describe the role, responsibilities, and requirements...' />
+                    value={description}
+                    onChange={e=> setDescription(e.target.value)}
+                    className='text-sm sm:text-lg'
+                    id='description' 
+                    placeholder='Describe the role, responsibilities, and requirements...' />
             </div>
             <div className='flex gap-2'>
-                <Button className='flex-1 bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-xs sm:text-sm transition-all duration-100 ease-in'>Post Internship</Button>
+                <Button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className='flex-1 bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-xs sm:text-sm transition-all duration-100 ease-in'>Post Internship</Button>
                 <Button 
-                onClick={onClose}
-                className='text-xs sm:text-sm bg-white text-black border-1 hover:bg-blue-400 transition-all duration-100 ease-in hover:cursor-pointer'>Cancel</Button>
+                    type="button"
+                    onClick={onClose}
+                    className='text-xs sm:text-sm bg-white text-black border-1 hover:bg-blue-400 transition-all duration-100 ease-in hover:cursor-pointer'>Cancel</Button>
             </div>
         </form>
       </div>
