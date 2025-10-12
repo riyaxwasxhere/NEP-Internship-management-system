@@ -1,8 +1,24 @@
 import { createPortal } from "react-dom";
+import { applyToInternship } from "../supabase/api";
+import { useAuth } from "../hooks/useAuth";
 
-function StudentApplyPortal({ isOpen, isClose, jobTitle, company }) {
-  const handleSubmit = (e) => {
+function StudentApplyPortal({
+  isOpen,
+  isClose,
+  jobTitle,
+  company,
+  internshipId,
+}) {
+  const { user } = useAuth();
+
+  const handleSubmit = async (e) => {
     e.preventDefault;
+    const result = await applyToInternship(internshipId, user.id);
+    if (result.success) {
+      alert("Applied Successfully");
+    } else {
+      console.log(result.error);
+    }
   };
 
   if (!isOpen) return null;
@@ -14,27 +30,17 @@ function StudentApplyPortal({ isOpen, isClose, jobTitle, company }) {
 
         <div>
           <form onSubmit={handleSubmit} action="">
-            <input
-              type="text"
-              placeholder="Enter your name"
-              className="p-2 w-full mt-5 shadow-lg rounded-md bg-gray-100 font-medium"
-            />
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="p-2 w-full mt-5 shadow-lg rounded-md bg-gray-100 font-medium"
-            />
-            <input
-              type="text"
-              placeholder="Enter your phone number"
-              className="p-2 w-full mt-5 shadow-lg rounded-md bg-gray-100 font-medium"
-            />
-            <p className="p-2 w-full mt-5 font-medium">Upload Your Resume</p>
+            <p className="p-2 w-full mt-5 font-medium text-center text-lg">
+              Upload Your Resume
+            </p>
             <input type="file" className="p-2 w-full mt-1" />
           </form>
 
           <div className="flex justify-center gap-5">
-            <button className="font-medium text-center bg-blue-500 text-white px-7 p-2 mt-5 rounded-md">
+            <button
+              onClick={handleSubmit}
+              className="font-medium text-center bg-blue-500 text-white px-7 p-2 mt-5 rounded-md"
+            >
               Submit
             </button>
             <button

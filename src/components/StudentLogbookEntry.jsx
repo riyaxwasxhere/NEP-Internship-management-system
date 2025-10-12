@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { addLogbookEntry, getStudentApplications } from "../supabase/api";
 import { useAuth } from "../hooks/useAuth";
 
-function StudentLogbookEntry() {
-  const [applicationId, setApplicationId] = useState();
+function StudentLogbookEntry({ applicationId, setApplicationId }) {
   const [description, setDescription] = useState();
   const [entries, setEntries] = useState([]);
   const { user } = useAuth();
@@ -33,6 +32,7 @@ function StudentLogbookEntry() {
       );
       console.log(filteredResult);
       if (result.success) {
+        setApplicationId(filteredResult[0].id);
         setEntries(filteredResult);
         console.log(result.data);
       } else {
@@ -40,7 +40,7 @@ function StudentLogbookEntry() {
       }
     };
     getEntries();
-  }, [user]);
+  }, [user, setApplicationId]);
 
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">

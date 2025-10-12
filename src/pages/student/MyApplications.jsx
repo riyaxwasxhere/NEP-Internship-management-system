@@ -20,6 +20,7 @@ function MyApplications() {
     const getApplications = async () => {
       const result = await getStudentApplications(user.id);
       if (result.success) {
+        console.log(result.data);
         setApplication(result.data);
       }
     };

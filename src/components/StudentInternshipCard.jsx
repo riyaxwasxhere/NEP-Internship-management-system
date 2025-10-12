@@ -6,6 +6,7 @@ import StudentApplyPortal from "./StudentApplyPortal";
 import { useState } from "react";
 
 function StudentInternshipCard({
+  internshipId,
   jobTitle,
   company,
   location,
@@ -65,6 +66,7 @@ function StudentInternshipCard({
           isClose={() => setShowModal(false)}
           jobTitle={jobTitle}
           company={company}
+          internshipId={internshipId}
         />
         <button className="w-4/12 p-2 mt-5 bg-gray-100 font-medium text-center rounded-md">
           View Details

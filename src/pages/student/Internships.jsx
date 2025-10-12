@@ -25,6 +25,7 @@ function Internships() {
       <p className="mt-2 text-s text-gray-500">See your Internships here</p>
       {internships.map((card) => (
         <StudentInternshipCard
+          internshipId={card.id}
           jobTitle={card.title}
           company={card.companies.name}
           location={card.location}

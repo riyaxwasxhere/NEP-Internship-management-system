@@ -1,47 +1,30 @@
 import { useEffect, useState } from "react";
 import StudentEntryCard from "./StudentEntryCard";
-import { getAllLogbookEntries } from "../supabase/api";
-import { useParams } from "react-router-dom";
+import { getStudentLogbookEntries } from "../supabase/api";
+import { useAuth } from "../hooks/useAuth";
 
-function StudentEntrySection() {
+function StudentEntrySection({ applicationId }) {
   const [entries, setEntries] = useState([]);
-  const { applicationId } = useParams();
+  const { user } = useAuth();
 
   useEffect(() => {
+    if (!user) return;
     const getEntries = async () => {
-      const result = await getAllLogbookEntries(applicationId);
-      if (result.success) setEntries(result.data);
+      const result = await getStudentLogbookEntries(user.id);
+      if (result.success) {
+        const filteredResult = result.data.filter(
+          (entry) => entry.applications.id == applicationId
+        );
+        console.log("heloo bubu");
+        console.log(filteredResult);
+        setEntries(filteredResult);
+      } else {
+        console.log(result.error);
+      }
     };
 
-    if (applicationId) getEntries();
-  }, [applicationId]);
-
-  // const entries = [
-  //   {
-  //     date: "2025-10-07",
-  //     jobTitle: "Full Stack Developer Intern",
-  //     description:
-  //       "Worked on implementing user authentication using JWT. Completed the login and signup API endpoints.",
-  //     status: "Approved",
-  //     statusColor: "bg-green-500",
-  //   },
-  //   {
-  //     date: "2025-10-07",
-  //     jobTitle: "Full Stack Developer Intern",
-  //     description:
-  //       "Worked on implementing user authentication using JWT. Completed the login and signup API endpoints.",
-  //     status: "Pending",
-  //     statusColor: "bg-amber-500",
-  //   },
-  //   {
-  //     date: "2025-10-07",
-  //     jobTitle: "Full Stack Developer Intern",
-  //     description:
-  //       "Worked on implementing user authentication using JWT. Completed the login and signup API endpoints.",
-  //     status: "Rejected",
-  //     statusColor: "bg-red-500",
-  //   },
-  // ];
+    getEntries();
+  }, [user, applicationId]);
 
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">
@@ -49,13 +32,15 @@ function StudentEntrySection() {
       <p className="text-s text-gray-500">
         Review your submitted logbook entries and their approval status
       </p>
+      {entries.length == 0 && (
+        <p className="text-s text-gray-500">No entries yet</p>
+      )}
       {entries.map((entry) => (
         <StudentEntryCard
           date={entry.date}
-          jobTitle={entry.id}
+          jobTitle={entry.applications.internships.title}
           description={entry.description}
-          // status={entry.status}
-          // statusColor={entry.statusColor}
+          verified={entry.verified}
         />
       ))}
     </div>
