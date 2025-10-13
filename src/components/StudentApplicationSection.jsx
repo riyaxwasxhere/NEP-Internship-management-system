@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
 import StudentApplicationCard from "./StudentApplicationCard";
+import { useEffect, useState } from "react";
+import { getStudentApplications } from "../supabase/api";
+import { useAuth } from "../hooks/useAuth";
 
 const statusColor = {
   applied: "bg-gray-500",
@@ -12,19 +15,21 @@ const statusColor = {
 
 function StudentApplicationSection() {
   const navigate = useNavigate();
-  const applicationCards = [
-    {
-      jobTitle: "Full Stack Developer Intern",
-      company: "Tech Innovators",
-      status: "accepted",
-    },
+  const [applicationCards, setApplicationCards] = useState([]);
+  const { user } = useAuth();
 
-    {
-      jobTitle: "ML Engineer Intern",
-      company: "AI Solutions",
-      status: "applied",
-    },
-  ];
+  useEffect(() => {
+    if (!user) return;
+    const getApplications = async () => {
+      const result = await getStudentApplications(user.id);
+      if (result.success) {
+        console.log(result.data);
+        setApplicationCards(result.data);
+      }
+    };
+    getApplications();
+  }, [user]);
+
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">
       <h2 className="font-medium text-2xl">My Applications</h2>
@@ -33,8 +38,8 @@ function StudentApplicationSection() {
       </p>
       {applicationCards.slice(0, 2).map((card) => (
         <StudentApplicationCard
-          title={card.jobTitle}
-          company={card.company}
+          title={card.internships.title}
+          company={card.internships.companies.name}
           status={card.status}
           statusColor={statusColor[card.status]}
         />

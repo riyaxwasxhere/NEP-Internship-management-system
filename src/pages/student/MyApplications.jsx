@@ -33,15 +33,19 @@ function MyApplications() {
       <p className="mt-2 text-s text-gray-500">
         See your application status here
       </p>
-      {applications.map((card) => (
-        <StudentApplicationCard
-          key={card.id}
-          title={card.internships.title}
-          company={card.internships.companies.name}
-          status={card.status}
-          statusColor={statusColor[card.status]}
-        />
-      ))}
+      {applications == 0 ? (
+        <p className="mt-5 text-lg text-gray-500">No Applications to show</p>
+      ) : (
+        applications.map((card) => (
+          <StudentApplicationCard
+            key={card.id}
+            title={card.internships.title}
+            company={card.internships.companies.name}
+            status={card.status}
+            statusColor={statusColor[card.status]}
+          />
+        ))
+      )}
       <p></p>
     </div>
   );

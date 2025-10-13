@@ -1,34 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import StudentInternshipCard from "./StudentInternshipCard";
+import { useState, useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { getVerifiedInternships } from "../supabase/api";
 
 function StudentInternshipSection() {
   const navigate = useNavigate();
-  const internshipCards = [
-    {
-      jobTitle: "Full Stack Developer Intern",
-      company: "Tech Innovators",
-      location: "Bangalore, Karnataka",
-      duration: "3 months",
-      stipend: "15000/month",
-      status: "Approved",
-    },
-    {
-      jobTitle: "Data Science Intern",
-      company: "Analytics Corp",
-      location: "Mumbai, Maharashtra",
-      duration: "6 months",
-      stipend: "20000/month",
-      status: "Approved",
-    },
-    {
-      jobTitle: "UI/UX Designer Intern",
-      company: "Creative Studios",
-      location: "Remote",
-      duration: "4 months",
-      stipend: "12000/month",
-      status: "Approved",
-    },
-  ];
+  const { user } = useAuth();
+  const [internshipCards, setInternshipCards] = useState([]);
+
+  useEffect(() => {
+    if (!user) return;
+    const getInternships = async () => {
+      const result = await getVerifiedInternships(user.id);
+      if (result.success) {
+        setInternshipCards(result.data);
+      }
+    };
+    getInternships();
+  }, [user]);
 
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">
@@ -36,11 +26,11 @@ function StudentInternshipSection() {
       <p className="text-s text-gray-500">
         Browse and apply for verified internship opportunities
       </p>
-      {internshipCards.map((card) => {
+      {internshipCards.slice(0, 2).map((card) => {
         return (
           <StudentInternshipCard
-            jobTitle={card.jobTitle}
-            company={card.company}
+            jobTitle={card.title}
+            company={card.companies.name}
             location={card.location}
             duration={card.duration}
             stipend={card.stipend}
