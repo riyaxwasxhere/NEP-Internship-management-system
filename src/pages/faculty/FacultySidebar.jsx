@@ -3,7 +3,7 @@ import { HomeIcon, ClipboardDocumentCheckIcon, BookOpenIcon, AcademicCapIcon } f
 
 import FacultyDashboard from "./FacultyDashboard";
 import Internships from "./Internships";
-import LogbookApprovals from "./LogbookApprovals";
+import LogbookApprovals from "./FacultyLogbook";
 import Credits from "./Credits";
 import SidebarLayout from "../SidebarLayout";
 

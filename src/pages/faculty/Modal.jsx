@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -8,52 +9,86 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-export function Modal({ name, rollNo, internship, duration, logbookEntries }) {
+export function Modal({
+  name,
+  rollNo,
+  internship,
+  duration,
+  logbookEntries,
+  onSubmit,
+}) {
+  const [credit, setCredit] = useState("");
+  const [remark, setRemark] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!credit) {
+      alert("Please enter credit points!");
+      return;
+    }
+    onSubmit(credit, remark);
+  };
+
   return (
     <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <Button variant="outline" className="bg-blue-600 text-white">Open Dialog</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+      <DialogTrigger asChild>
+        <Button variant="outline" className="bg-blue-600 text-white">
+          Assign Credit
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Assign Credits</DialogTitle>
             <DialogDescription>
-                <div>
-                    <p>Assign NEP credits for verified internship completion</p>
-                    <p className="my-2 font-semibold text-black">Student Details</p>
-                </div>
-                <div className="border-1 rounded bg-gray-100 p-3 text-black">
-                    <p><strong className="font-semibold">Name:</strong> {name}</p>
-                    <p><strong className="font-semibold ">Roll No:</strong> {rollNo}</p>
-                    <p><strong className="font-semibold ">Internship:</strong> {internship}</p>
-                    <p><strong className="font-semibold ">Duration:</strong> {duration}</p>
-                    <p><strong className="font-semibold ">Logbook Entries:</strong> {logbookEntries}</p>
-                </div>
+              <p>Assign NEP credits for verified internship completion</p>
+              <div className="border rounded bg-gray-100 p-3 text-black mt-3">
+                <p><strong>Name:</strong> {name}</p>
+                <p><strong>Roll No:</strong> {rollNo}</p>
+                <p><strong>Internship:</strong> {internship}</p>
+                <p><strong>Duration:</strong> {duration}</p>
+                <p><strong>Logbook Entries:</strong> {logbookEntries}</p>
+              </div>
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
+
+          <div className="grid gap-4 mt-4">
+            <div className="grid gap-2">
               <Label htmlFor="credit">Credit Points *</Label>
-              <Input className="border border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:border-blue-600" id="credit" name="credit" placeholder="Enter credits points" />
+              <Input
+                id="credit"
+                value={credit}
+                onChange={(e) => setCredit(e.target.value)}
+                placeholder="Enter credit points"
+                className="border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-600"
+              />
             </div>
-            <div className="grid gap-3">
+            <div className="grid gap-2">
               <Label htmlFor="remark">Remark (optional)</Label>
-              <textarea className="p-2 h-20 rounded border border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:border-blue-600 focus-visible:outline-none" id="remark" name="remark" placeholder="Add remark or feedback"  />
+              <textarea
+                id="remark"
+                value={remark}
+                onChange={(e) => setRemark(e.target.value)}
+                className="p-2 h-20 rounded border border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:outline-none"
+                placeholder="Add remark or feedback"
+              />
             </div>
           </div>
-          <DialogFooter>
+
+          <DialogFooter className="mt-4">
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit" className="text-white bg-blue-600 hover:bg-blue-400" >Assignn Credits</Button>
+            <Button type="submit" className="text-white bg-blue-600 hover:bg-blue-500">
+              Assign Credits
+            </Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
-  )
+  );
 }

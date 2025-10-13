@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { FiLogOut } from "react-icons/fi";
 import {
   useNavigate,
   useLocation,
@@ -108,9 +109,23 @@ export default function SidebarLayout({
             </button>
           ))}
         </nav>
-        <button onClick={handleLogout} className="cursor-pointer">
-          Logout
+      <div className="mt-auto p-2">
+        <button
+        onClick={handleLogout}
+        className={`
+          flex items-center 
+          w-full
+          p-2 rounded-lg
+          text-white
+          hover:bg-blue-500
+          transition-colors
+          justify-center ${isOpen ? "justify-start" : "justify-center"}
+        `}
+        >
+          <FiLogOut className="w-6 h-6" />
+    {isOpen && <span className="ml-2">Logout</span>}
         </button>
+      </div>
       </aside>
 
       {/* Overlay for mobile */}

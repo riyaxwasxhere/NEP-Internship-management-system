@@ -13,17 +13,11 @@ function Internships(props) {
             <p><span className='text-gray-600'>Location:</span> {props.location}</p>
         </div>
         <div className='grid md:grid-cols-2 grid-cols-1 gap-5'>
-            <button className='flex justify-center gap-2 cursor-pointer border-1 border-green-500 rounded-lg text-green-500 hover:bg-green-500 hover:text-white font-semibold p-2'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                </svg>
-                <p>Approved</p>
+            <button onClick={props.onApprove} className='flex justify-center gap-2 cursor-pointer border-1 border-green-500 rounded-lg text-green-500 hover:bg-green-500 hover:text-white font-semibold p-2'>
+                <p>✅ Approved</p>
             </button>
-            <button className='flex justify-center gap-2 cursor-pointer border-1 text-red-500 border-red-500 rounded-lg hover:text-white hover:bg-red-500 p-2 '>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-                <p>Rejected</p>
+            <button onClick={props.onReject} className='flex justify-center gap-2 cursor-pointer border-1 text-red-500 border-red-500 rounded-lg hover:text-white hover:bg-red-500 p-2 '>  
+                <p>❌ Rejected</p>
             </button>
         </div>
     </div>
