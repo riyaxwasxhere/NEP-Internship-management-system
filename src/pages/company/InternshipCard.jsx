@@ -2,24 +2,17 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils";
-import { CalendarIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIcon, UsersIcon, WorkflowIcon, X } from 'lucide-react';
+import { CalendarIcon, IndianRupeeIcon, MapPinIcon, Trash2Icon } from 'lucide-react';
 import InternshipDetails from './InternshipDetails';
 
-const InternshipCard = ({ title, posted, location, duration, stipend, applicants }) => {
+const InternshipCard = ({ title, domain, posted, location, duration, stipend, applicants, description, startDate, applyBy }, ...props) => {
   const [isOpen, setIsOpen ] = useState(false)
   const datePosted = posted.split('T')
   const finalDate = datePosted[0]
-  console.log(datePosted[0])
-
   return (
     <div>
       <Card className=' hover:shadow-2xl hover:scale-102 cursor-pointer transition-all duration-300 ease-in-out' >
@@ -45,7 +38,7 @@ const InternshipCard = ({ title, posted, location, duration, stipend, applicants
             <CardContent className='grid grid-cols-1 gap-1 sm:grid-cols-3 text-gray-500'>
                 <p className='flex items-center sm:gap-2 text-xs sm:text-sm'><MapPinIcon className='h-3.5 sm:h-4.5'/> {location}</p>
                 <p className='flex items-center sm:gap-2 text-xs sm:text-sm'><CalendarIcon className='h-3.5 sm:h-4.5'/> {duration}</p>
-                <p className='flex items-center sm:gap-2 text-xs sm:text-sm'><DollarSignIcon className='h-3.5 sm:h-4.5'/> {stipend}</p>
+                <p className='flex items-center sm:gap-2 text-xs sm:text-sm'><IndianRupeeIcon className='h-3.5 sm:h-4.5'/> {stipend}</p>
             </CardContent>
 
             <CardFooter className='flex gap-2'>
@@ -55,17 +48,27 @@ const InternshipCard = ({ title, posted, location, duration, stipend, applicants
                 className='flex-1 hover:cursor-pointer hover:bg-blue-400 bg-blue-500 text-white transition-all duration-100 ease-in'>View Applications</Button>
 
                 <InternshipDetails
-                title={title}
-                posted={finalDate}
-                location={location}
-                duration={duration}
-                stipend={stipend}
-                applicants={applicants}
-                
-                isOpen={isOpen}
-                onClose={()=>setIsOpen(false)}
+                  title={title}
+                  description={description}
+                  domain={domain}
+                  posted={finalDate}
+                  location={location}
+                  duration={duration}
+                  stipend={stipend}
+                  applicants={applicants}
+                  startDate={startDate}
+                  applyBy={applyBy}
+
+                  isOpen={isOpen}
+                  onClose={()=>setIsOpen(false)}
                 />
                 <Button variant="outline" className='bg-gray-50 hover:cursor-pointer hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in'>Edit</Button>
+                <Button
+                  variant="outline"
+                  className="bg-red-500 hidden sm:flex text-white hover:cursor-pointer hover:bg-red-600 hover:text-black transition-all duration-100 ease-in"
+                >
+                  <Trash2Icon/>
+                </Button>
             </CardFooter>
         </Card>
     </div>

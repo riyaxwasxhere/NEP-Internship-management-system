@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 
-const SearchBar = () => {
+const SearchBar = ({onSearch}) => {
   const [query, setQuery] = useState("")
 
   const handleSearch = (e) => {
@@ -24,11 +24,11 @@ const SearchBar = () => {
           className=" text-xs sm:text-[14px] bg-transparent flex-1 outline-0 border-0 w-32"
         />
         <Button 
-        className='bg-blue-500 text-xs rounded-3xl outline-0 border-0 hover:bg-blue-400 cursor-pointer'
-        type="submit" 
-        variant="default">
-            <Search 
-            className=" text-white" size={10} />
+          className='bg-blue-500 text-xs rounded-3xl outline-0 border-0 hover:bg-blue-400 cursor-pointer'
+          type="submit" 
+          variant="default">
+              <Search 
+              className=" text-white" size={10} />
         </Button>
       </div>
       
