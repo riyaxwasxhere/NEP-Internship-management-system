@@ -152,7 +152,58 @@ export const getStudentDashboardStats = async (studentId) => {
 // ─── INTERNSHIPS ───────────────────────────────────────────────────────────────
 //
 
-// Get all internships posted by a particular company
+//company stats for dashboard
+export async function getCompanyStats(companyId) {
+  try {
+    // 1️⃣ Fetch all internships posted by this company
+    const { data: internships, error: internshipsError } = await supabase
+      .from("internships")
+      .select("id")
+      .eq("company_id", companyId);
+
+    if (internshipsError) throw internshipsError;
+
+    const internshipIds = internships.map((i) => i.id);
+    if (internshipIds.length === 0) {
+      return {
+        total_internships: 0,
+        total_applicants: 0,
+        active_interns: 0,
+        completed_interns: 0,
+      };
+    }
+
+    // 2️⃣ Fetch all applications related to those internships
+    const { data: applications, error: applicationsError } = await supabase
+      .from("applications")
+      .select("status")
+      .in("internship_id", internshipIds);
+
+    if (applicationsError) throw applicationsError;
+
+    // 3️⃣ Calculate stats
+    const total_internships = internships.length;
+    const total_applicants = applications.length;
+    const active_interns = applications.filter(
+      (a) => a.status === "accepted"
+    ).length;
+    const completed_interns = applications.filter(
+      (a) => a.status === "completed"
+    ).length;
+
+    return {
+      total_internships,
+      total_applicants,
+      active_interns,
+      completed_interns,
+    };
+  } catch (error) {
+    console.error("Error fetching company stats:", error.message);
+    return null;
+  }
+}
+
+// Get all internships posted by a particular company (with new fields)
 export const getCompanyInternships = async (companyId) => {
   try {
     const { data, error } = await supabase
@@ -167,6 +218,9 @@ export const getCompanyInternships = async (companyId) => {
         duration,
         verified,
         created_at,
+        apply_date,
+        start_date,
+        domain,
         applications (
           id,
           status,
@@ -182,6 +236,52 @@ export const getCompanyInternships = async (companyId) => {
     return { success: false, error: err.message };
   }
 };
+
+// Update (edit) an internship post by the company
+export const updateInternship = async (internshipId, updatedFields) => {
+  try {
+    const { data, error } = await supabase
+      .from("internships")
+      .update(updatedFields)
+      .eq("id", internshipId)
+      .select();
+
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+// Delete an internship post by ID
+export const deleteInternship = async (internshipId) => {
+  try {
+    const { data, error } = await supabase
+      .from("internships")
+      .delete()
+      .eq("id", internshipId)
+      .select();
+
+    return handleResponse(data, error);
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
+export async function getApplicantCountForInternship(internshipId) {
+  try {
+    const { count, error } = await supabase
+      .from("applications")
+      .select("*", { count: "exact", head: true }) // only count, no data
+      .eq("internship_id", internshipId);
+
+    if (error) throw error;
+
+    return count || 0;
+  } catch (error) {
+    console.error("Error fetching applicant count:", error.message);
+    return null;
+  }
+}
 
 // Faculty verifies or rejects an internship
 export const updateInternshipVerificationStatus = async (
