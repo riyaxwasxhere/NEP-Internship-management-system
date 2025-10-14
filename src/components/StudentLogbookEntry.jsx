@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-import { addLogbookEntry, getStudentApplications } from "../supabase/api";
-import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
+import { addLogbookEntry } from "../supabase/api";
 
-function StudentLogbookEntry({ applicationId, setApplicationId }) {
+function StudentLogbookEntry({ applicationId, setApplicationId, entries }) {
   const [description, setDescription] = useState();
-  const [entries, setEntries] = useState([]);
-  const { user } = useAuth();
 
   const handleSubmitEntry = async (e) => {
     e.preventDefault();
@@ -24,25 +21,6 @@ function StudentLogbookEntry({ applicationId, setApplicationId }) {
   };
 
   console.log(applicationId);
-
-  useEffect(() => {
-    if (!user) return;
-    const getEntries = async () => {
-      const result = await getStudentApplications(user.id);
-      const filteredResult = result.data.filter(
-        (entry) => entry.status == "accepted"
-      );
-      console.log(filteredResult);
-      if (result.success) {
-        setApplicationId(filteredResult[0].id);
-        setEntries(filteredResult);
-        setApplicationId(filteredResult[0].id);
-      } else {
-        console.log(result.error);
-      }
-    };
-    getEntries();
-  }, [user, setApplicationId]);
 
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">
