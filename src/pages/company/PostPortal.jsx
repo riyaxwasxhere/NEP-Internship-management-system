@@ -21,6 +21,7 @@ const PostPortal = ({ isOpen, onClose, companyId }) => {
 
     const { user } = useAuth()
     
+    if(!user) return
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -28,6 +29,7 @@ const PostPortal = ({ isOpen, onClose, companyId }) => {
         const result = await createInternship(
             companyId,
             title, 
+            domain,
             description, 
             location, 
             stipend, 
@@ -55,7 +57,7 @@ const PostPortal = ({ isOpen, onClose, companyId }) => {
 
   return createPortal(
     <div className='fixed top-0 left-0 right-0 bottom-0 bg-black/60 flex items-center justify-center z-1000'>
-      <div className='flex flex-col gap-5 bg-white p-5 rounded-2xl w-[95%] sm:w-[60%] md:w-[45%]'>
+      <div className='flex flex-col gap-5 bg-white p-5 rounded-2xl max-h-[80vh] w-[95%] sm:w-[60%] md:w-[45%] overflow-y-auto'>
         <div>
             <div className='flex items-center justify-between'>
                 <h2 className='flex-1 text-center text-xl sm:text-2xl font-bold '>Post New Internship </h2>

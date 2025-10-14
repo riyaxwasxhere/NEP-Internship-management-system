@@ -2,16 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils";
-import { CalendarIcon, DollarSignIcon, HomeIcon, LogOutIcon, MapPinIcon, MenuIcon, UsersIcon, WorkflowIcon, X } from 'lucide-react';
 import PostPortal from './PostPortal';
 import InternshipCard from './InternshipCard';
 import { getCompanyInternships } from '../../supabase/api';
@@ -19,40 +12,12 @@ import { useAuth } from "../../hooks/useAuth"
 
 
 const CompanyDashboard = () => {
-  // const sidebarEls = [
-  //   { label: "Dashboard", icon: <HomeIcon className='h-4 sm:h-5'/> },
-  //   { label: "My Internships", icon: <WorkflowIcon className='h-4 sm:h-5'/> },
-  //   { label: "Applicants", icon: <UsersIcon className='h-4 sm:h-5'/> },
-  //   { label: "Logout", icon: <LogOutIcon className='h-4 sm:h-5'/> },
-  // ]
-
   const stats = [
     { label: "Total Postings", value: 2 },
     { label: "Total Applicants", value: 42 },
     { label: "Active Interns", value: 5 },
     { label: "Completed", value: 12 },
   ]
-
-  // const internships = [
-  //   {
-  //     title: "Full Stack Developer Intern",
-  //     status: "Approved",
-  //     posted: "06-10-2025",
-  //     location: "Bangalore, Karnataka",
-  //     duration: "3 months",
-  //     stipend: "₹15,000/month",
-  //     applicants: 24,
-  //   },
-  //   {
-  //     title: "ML Engineer Intern",
-  //     status: "Pending",
-  //     posted: "06-10-2025",
-  //     location: "Mumbai, Maharashtra",
-  //     duration: "6 months",
-  //     stipend: "₹20,000/month",
-  //     applicants: 18,
-  //   },
-  // ]
 
   const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuth();
@@ -78,6 +43,10 @@ const CompanyDashboard = () => {
           }
           fetchInternships()
       },[user])
+
+      if(isLoading) return <p className='text-center mt-10 text-gray-500'>Loading...</p>
+    if(error) return <p className='text-center mt-10 text-red-500'>{error}</p>
+
   // const [sidebarOpen, setSidebarOpen] = useState(true)
 
   // const handleSidebar = () =>{
