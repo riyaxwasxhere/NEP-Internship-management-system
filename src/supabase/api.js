@@ -518,7 +518,7 @@ export const getFacultyLogbooks = async (facultyId) => {
         status,
         internships(title, duration, location, companies(name)),
         students(full_name, email, department, year),
-        logbook_entries(count)
+        logbook_entries(*)
       `
       )
       .in("student_id", studentIds)

@@ -1,23 +1,53 @@
-import React from 'react'
+import React from "react";
+import { Button } from "@/components/ui/button";
 
-function Logbook(props) {
+export default function Logbook({ logbook, onReview }) {
+  const { students, internships, logbook_entries: entries } = logbook;
+
+  const unverifiedCount = entries.filter((e) => !e.verified).length;
+  const status = unverifiedCount === 0 ? "completed" : "ongoing";
+
   return (
-    <div className='relative bg-white rounded-2xl border-gray-200 border-1 p-5 mt-2'>
-         <p className='border-1 text-center text-sm font-semibold px-1.5 pb-0.5 rounded-xl bg-amber-500 absolute right-2 top-2 md:right-4 md:top-4 text-white w-fit'>{props.status}</p>
-        <div>
-            <h1 className='mt-2 md:mt-0 mb-1 font-semibold text-xl'>{props.name}</h1>
-            <p className='font-semibold text-gray-500'>{props.role}</p>
-        </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 md:gap-2 mt-2'>
-            <p><span>Total Entries:</span> {props.entries}</p>
-            <p><span>Completion:</span> {props.date}</p>
-        </div>
-        <div className='grid grid-cols-1 md:grid-cols-[1fr_0.3fr] gap-3 mt-4'>
-            <button className='p-2 bg-gray-50 border-gray-300 border-1 rounded-lg hover:text-white font-bold hover:bg-blue-500 cursor-pointer'>Review logbook</button>
-            <button className='bg-blue-700 text-white font-bold p-2 border-1 rounded-lg cursor-pointer hover:bg-blue-500'>Assign credits</button>
-        </div>
-    </div>
-  )
-}
+    <div className="relative border border-gray-200 rounded-lg p-4 sm:p-5 bg-white shadow-sm">
+      {/* Status tag */}
+      <span
+        className={`absolute top-3 right-3 px-3 py-1 rounded-full text-sm font-medium ${
+          status === "completed"
+            ? "bg-green-100 text-green-700"
+            : "bg-blue-100 text-blue-700"
+        }`}
+      >
+        {status === "completed" ? "Completed" : "Ongoing"}
+      </span>
 
-export default Logbook
+      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-1">
+        {students.full_name}
+      </h2>
+
+      <p className="text-gray-500 text-sm sm:text-base mb-2">
+        {students.id} • {students.department} Dept • {internships.title}
+      </p>
+
+      <div className="flex flex-col sm:flex-row sm:gap-10 mb-4 text-gray-600 text-sm sm:text-base">
+        <p>
+          <span className="font-semibold">Total Entries:</span> {entries.length}
+        </p>
+        <p>
+          <span className="font-semibold">Approved:</span>{" "}
+          {entries.filter((e) => e.verified).length}
+        </p>
+        <p>
+          <span className="font-semibold">Pending:</span> {unverifiedCount}
+        </p>
+      </div>
+
+      {/* Review Logbook Button */}
+      <Button
+        onClick={onReview}
+        className="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white"
+      >
+        Review Logbook
+      </Button>
+    </div>
+  );
+}
