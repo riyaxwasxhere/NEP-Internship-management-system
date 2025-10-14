@@ -1,22 +1,46 @@
+import { useEffect, useState } from "react";
 import StudentCreditGuidelines from "../../components/StudentCreditGuidelines";
 import StudentCreditHistory from "../../components/StudentCreditHistory";
 import StudentStatsCard from "../../components/StudentStatsCard";
+import { getCreditStats } from "../../supabase/api";
+import { useAuth } from "../../hooks/useAuth";
+
+const creditsArr = [
+  {
+    title: "Total Credits",
+    value: 0,
+  },
+  {
+    title: "Completed Internships",
+    value: 0,
+  },
+  {
+    title: "Average Credits",
+    value: 0,
+  },
+];
 
 function Credits() {
-  const credits = [
-    {
-      title: "Total Credits Earned",
-      value: 12,
-    },
-    {
-      title: "Completed Internships",
-      value: 3,
-    },
-    {
-      title: "Average Credits",
-      value: 5,
-    },
-  ];
+  const [credits, setCredits] = useState([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) return;
+    const getCredits = async () => {
+      const result = await getCreditStats(user.id);
+      console.log(result);
+      Object.values(result).forEach((element, index) => {
+        creditsArr[index].value = element;
+      });
+
+      setCredits(creditsArr);
+    };
+    getCredits();
+  }, [user]);
+
+  console.log("i am bubu");
+  console.log(credits);
+
   return (
     <div className="p-2 md:p-10 bg-gray-100 min-h-screen">
       <h1 className="font-bold text-4xl">NEP Credits</h1>

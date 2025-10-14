@@ -23,16 +23,20 @@ function Internships() {
     <div className="p-2 md:p-10 bg-gray-100 min-h-screen">
       <h1 className="font-bold text-4xl">Internships</h1>
       <p className="mt-2 text-s text-gray-500">See your Internships here</p>
-      {internships.map((card) => (
-        <StudentInternshipCard
-          internshipId={card.id}
-          jobTitle={card.title}
-          company={card.companies.name}
-          location={card.location}
-          duration={card.duration}
-          stipend={card.stipend}
-        />
-      ))}
+      {internships == 0 ? (
+        <p className="mt-5 text-lg text-gray-500">No Internships to show</p>
+      ) : (
+        internships.map((card) => (
+          <StudentInternshipCard
+            internshipId={card.id}
+            jobTitle={card.title}
+            company={card.companies.name}
+            location={card.location}
+            duration={card.duration}
+            stipend={card.stipend}
+          />
+        ))
+      )}
     </div>
   );
 }

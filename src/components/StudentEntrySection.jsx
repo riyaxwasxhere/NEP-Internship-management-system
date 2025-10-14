@@ -24,7 +24,7 @@ function StudentEntrySection({ applicationId }) {
     };
 
     getEntries();
-  }, [user, applicationId]);
+  }, [applicationId, user, setEntries]);
 
   return (
     <div className="border-1 rounded-md mt-5 p-5 bg-white">
@@ -38,7 +38,7 @@ function StudentEntrySection({ applicationId }) {
       {entries.map((entry) => (
         <StudentEntryCard
           date={entry.date}
-          jobTitle={entry.applications.internships.title}
+          jobTitle={entry?.internships?.title}
           description={entry.description}
           verified={entry.verified}
         />
