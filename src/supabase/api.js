@@ -848,3 +848,116 @@ export const getPendingCreditAssignments = async (facultyId) => {
     return { success: false, error: err.message };
   }
 };
+
+//for 🐔
+
+export async function getCreditStats(studentId) {
+  try {
+    // 1️⃣ Get completed applications for this student
+    const { data: completedApps, error: appError } = await supabase
+      .from("applications")
+      .select("id")
+      .eq("student_id", studentId)
+      .eq("status", "completed");
+
+    if (appError) throw appError;
+
+    const completedAppIds = completedApps.map((a) => a.id);
+
+    // If no completed internships, return defaults
+    if (completedAppIds.length === 0) {
+      return {
+        total_completed_internships: 0,
+        total_credits_earned: 0,
+        avg_credits: 0,
+      };
+    }
+
+    // 2️⃣ Get all credits earned for these completed applications
+    const { data: creditsData, error: creditError } = await supabase
+      .from("credits")
+      .select("credit_points")
+      .in("application_id", completedAppIds);
+
+    if (creditError) throw creditError;
+
+    // 3️⃣ Compute totals and averages
+    const total_completed_internships = completedAppIds.length;
+    const total_credits_earned = creditsData.reduce(
+      (sum, c) => sum + (c.credit_points || 0),
+      0
+    );
+    const avg_credits =
+      total_completed_internships > 0
+        ? total_credits_earned / total_completed_internships
+        : 0;
+
+    return {
+      total_completed_internships,
+      total_credits_earned,
+      avg_credits: Number(avg_credits.toFixed(2)),
+    };
+  } catch (error) {
+    console.error("Error fetching student stats:", error.message);
+    return null;
+  }
+}
+
+export async function getStudentCreditHistory(studentId) {
+  try {
+    // 1️⃣ Get all completed applications for this student
+    const { data: applications, error: appError } = await supabase
+      .from("applications")
+      .select(
+        `
+        id,
+        internship:internships (
+          title,
+          duration,
+          company:companies ( name )
+        ),
+        credits:credits (
+          credit_points,
+          remarks,
+          created_at,
+          faculty:faculty (
+            full_name
+          )
+        )
+      `
+      )
+      .eq("student_id", studentId)
+      .eq("status", "completed");
+
+    if (appError) throw appError;
+
+    // 2️⃣ Format the results into clean credit history items
+    const history = [];
+
+    for (const app of applications) {
+      const internship = app.internship;
+      const credit = app.credits?.[0]; // each completed internship typically has one credit entry
+
+      if (internship && credit) {
+        history.push({
+          internship_title: internship.title,
+          company_name: internship.company?.name || "N/A",
+          duration: internship.duration || "N/A",
+          approved_by: credit.faculty?.full_name || "N/A",
+          approval_date: credit.created_at?.split("T")[0],
+          credit_points: credit.credit_points || 0,
+        });
+      }
+    }
+
+    // 3️⃣ Sort most recent first (optional)
+    history.sort(
+      (a, b) => new Date(b.approval_date) - new Date(a.approval_date)
+    );
+
+    return history;
+  } catch (error) {
+    console.error("Error fetching credit history:", error.message);
+    return [];
+  }
+}
