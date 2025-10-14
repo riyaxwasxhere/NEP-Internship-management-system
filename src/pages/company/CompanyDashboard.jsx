@@ -115,6 +115,9 @@ const CompanyDashboard = () => {
                 location={job.location}
                 duration={job.duration}
                 stipend={job.stipend}
+                domain={job.domain}
+                startDate={job.start_date}
+                applyBy={job.apply_date}
                 applicants={job.applicants || 0}
                 onDelete = {(deletedId) => 
                   setInternships((prev) => prev.filter((i) => i.id !== deletedId))

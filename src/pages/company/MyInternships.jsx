@@ -14,19 +14,19 @@ const MyInternships = () => {
     useEffect(() => {
         if (!user) return
         const fetchInternships = async () => {
-        try {
-            setIsLoading(true)
-            setError(null)
-            const response = await getCompanyInternships(user.id)
-            if (response.success) {
-            setInternships(response.data)
+            try {
+                setIsLoading(true)
+                setError(null)
+                const response = await getCompanyInternships(user.id)
+                if (response.success) {
+                setInternships(response.data)
+                }
+            } catch (err) {
+                console.error(err.message)
+                setError(err.message)
+            } finally {
+                setIsLoading(false)
             }
-        } catch (err) {
-            console.error(err.message)
-            setError(err.message)
-        } finally {
-            setIsLoading(false)
-        }
         }
         fetchInternships()
     }, [user])
@@ -79,8 +79,9 @@ const MyInternships = () => {
                                 duration={job.duration}
                                 stipend={job.stipend}
                                 applicants={job.applicants || 0}
-                                startDate={job.startDate || ""}
-                                applyBy={job.applyBy || ""}
+
+                                startDate={job.start_date || ""}
+                                applyBy={job.apply_date || ""}
                                 onDelete={(deletedId)=> {
                                     setSearchResults((prev)=> prev.filter((i)=> i.id !== deletedId))
                                     setInternships((prev) => prev.filter ((i)=> i.id !== deletedId))

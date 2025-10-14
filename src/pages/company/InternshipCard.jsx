@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,12 +9,36 @@ import {
 import { CalendarIcon, IndianRupeeIcon, MapPinIcon, Trash2Icon } from 'lucide-react';
 import InternshipDetails from './InternshipDetails';
 import { toast } from "sonner"
-import { deleteInternship } from '../../supabase/api';
+import { deleteInternship, getApplicantCountForInternship } from '../../supabase/api';
+import { useAuth } from '../../hooks/useAuth';
 
 const InternshipCard = ({ id, title, domain, posted, location, duration, stipend, applicants, description, startDate, applyBy, onDelete }) => {
   const [isOpen, setIsOpen ] = useState(false)
   const datePosted = posted.split('T')
   const finalDate = datePosted[0]
+
+  const {user} = useAuth()
+  const [count, setCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  useEffect(()=>{
+    if(!user) return
+    const fetchCount = async () =>{
+      try{
+        setIsLoading(true)
+        setError(null)
+        const result = await getApplicantCountForInternship(id)
+        setCount(result || 0)
+      }catch(err){
+        console.error(err.message)
+        setError(err.message)
+      }finally{
+        setIsLoading(false)
+      }
+    }
+    fetchCount()
+  },[user, id])
 
   const handleDelete = async (e) => {
     e.stopPropagation()
@@ -52,7 +76,7 @@ const InternshipCard = ({ id, title, domain, posted, location, duration, stipend
                     )}>{job.status}</Badge> */}
                 </div>
                 <div className='flex flex-col items-end'>
-                  <h2 className='text-blue-600 text-xl sm:text-2xl font-bold'>{applicants}</h2>
+                  <h2 className='text-blue-600 text-xl sm:text-2xl font-bold'>{count}</h2>
                   <p className='text-gray-500 text-xs sm:text-sm'>Applicants</p>
                 </div>
             </CardHeader>
