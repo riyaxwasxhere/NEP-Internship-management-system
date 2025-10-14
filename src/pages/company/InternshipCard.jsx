@@ -70,6 +70,8 @@ const InternshipCard = ({ id, title, domain, posted, location, duration, stipend
                 className='flex-1 hover:cursor-pointer hover:bg-blue-400 bg-blue-500 text-white transition-all duration-100 ease-in'>View Applications</Button>
 
                 <InternshipDetails
+                  key={id}
+                  id={id}
                   title={title}
                   description={description}
                   domain={domain}
@@ -83,9 +85,9 @@ const InternshipCard = ({ id, title, domain, posted, location, duration, stipend
 
                   isOpen={isOpen}
                   onClose={()=>setIsOpen(false)}
+                  handleDelete={handleDelete}
                 />
                 <Button 
-                  
                   variant="outline" 
                   className='bg-gray-50 hover:cursor-pointer hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in'>Edit</Button>
                 <Button

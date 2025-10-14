@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { CalendarIcon, HourglassIcon, IndianRupeeIcon, PlayIcon, Trash2Icon, X } from 'lucide-react'
 
-const InternshipDetails = ({ isOpen, onClose, title, domain, posted, description, location, duration, stipend, applicants, startDate, applyBy}) => {
+const InternshipDetails = ({ isOpen, onClose, id, title, domain, posted, description, location, duration, stipend, applicants, startDate, applyBy, handleDelete}) => {
     
     if(!isOpen) return null
 
@@ -62,6 +62,7 @@ const InternshipDetails = ({ isOpen, onClose, title, domain, posted, description
                 <div className='flex justify-center gap-2'>
                     <Button variant="outline" className='text-white bg-blue-500 hover:cursor-pointer hover:bg-blue-600 hover:text-black transition-all duration-100 ease-in px-8'>Edit</Button>
                     <Button
+                    onClick={handleDelete}
                     variant="outline"
                     className="bg-red-500 text-white hover:cursor-pointer hover:bg-red-600 hover:text-black transition-all duration-100 ease-in"
                     >

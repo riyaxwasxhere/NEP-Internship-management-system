@@ -80,19 +80,19 @@ const CompanyDashboard = () => {
             <Card >
               <CardContent className='flex flex-col gap-2'>
                 <h3 className='text-gray-500 text-sm font-semibold'>Total Applicants</h3>
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold ">{stats.total_applicants}</p>
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-500">{stats.total_applicants}</p>
               </CardContent>
             </Card>
             <Card >
               <CardContent className='flex flex-col gap-2'>
                 <h3 className='text-gray-500 text-sm font-semibold'>Active Interns</h3>
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold ">{stats.active_interns}</p>
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-green-500">{stats.active_interns}</p>
               </CardContent>
             </Card>
             <Card >
               <CardContent className='flex flex-col gap-2'>
                 <h3 className='text-gray-500 text-sm font-semibold'>Completed Interns</h3>
-                <p className="text-xl sm:text-2xl md:text-3xl font-bold ">{stats.completed_interns}</p>
+                <p className="text-xl sm:text-2xl md:text-3xl font-bold text-red-500">{stats.completed_interns}</p>
               </CardContent>
             </Card>
         </div>
