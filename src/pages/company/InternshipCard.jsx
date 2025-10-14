@@ -8,11 +8,33 @@ import {
 } from "@/components/ui/card"
 import { CalendarIcon, IndianRupeeIcon, MapPinIcon, Trash2Icon } from 'lucide-react';
 import InternshipDetails from './InternshipDetails';
+import { toast } from "sonner"
+import { deleteInternship } from '../../supabase/api';
 
-const InternshipCard = ({ title, domain, posted, location, duration, stipend, applicants, description, startDate, applyBy }, ...props) => {
+const InternshipCard = ({ id, title, domain, posted, location, duration, stipend, applicants, description, startDate, applyBy, onDelete }) => {
   const [isOpen, setIsOpen ] = useState(false)
   const datePosted = posted.split('T')
   const finalDate = datePosted[0]
+
+  const handleDelete = async (e) => {
+    e.stopPropagation()
+    console.log("Delete clicked for:", id)
+    const confirmDelete = window.confirm(`Are you sure you want to delete "${title}" internship?`)
+    if(!confirmDelete) return
+    try{
+      const response = await deleteInternship(id)
+      if(response.success) {
+        toast.success("Internship deleted successfully.")
+        onDelete?.(id)
+      }else{
+        toast.error(response.error || "Failed to delete internship.")
+      }
+    }catch(err){
+      console.error(err)
+      toast.error("An unexepected error occurred while deleting.")
+    }
+  }
+
   return (
     <div>
       <Card className=' hover:shadow-2xl hover:scale-102 cursor-pointer transition-all duration-300 ease-in-out' >
@@ -62,8 +84,12 @@ const InternshipCard = ({ title, domain, posted, location, duration, stipend, ap
                   isOpen={isOpen}
                   onClose={()=>setIsOpen(false)}
                 />
-                <Button variant="outline" className='bg-gray-50 hover:cursor-pointer hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in'>Edit</Button>
+                <Button 
+                  
+                  variant="outline" 
+                  className='bg-gray-50 hover:cursor-pointer hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in'>Edit</Button>
                 <Button
+                  onClick={handleDelete}
                   variant="outline"
                   className="bg-red-500 hidden sm:flex text-white hover:cursor-pointer hover:bg-red-600 hover:text-black transition-all duration-100 ease-in"
                 >

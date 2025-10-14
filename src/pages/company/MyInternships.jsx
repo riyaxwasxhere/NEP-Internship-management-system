@@ -70,6 +70,7 @@ const MyInternships = () => {
                         key={index}
                         className="hover:shadow-lg transition-all duration-300 ease-in-out">
                             <InternshipCard
+                                id={job.id}
                                 title={job.title}
                                 domain={job.domain || ""}
                                 description={job.description}
@@ -80,6 +81,10 @@ const MyInternships = () => {
                                 applicants={job.applicants || 0}
                                 startDate={job.startDate || ""}
                                 applyBy={job.applyBy || ""}
+                                onDelete={(deletedId)=> {
+                                    setSearchResults((prev)=> prev.filter((i)=> i.id !== deletedId))
+                                    setInternships((prev) => prev.filter ((i)=> i.id !== deletedId))
+                                }}
                             />
                     </div>
                 ))}
